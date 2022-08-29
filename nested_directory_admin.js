@@ -16,10 +16,20 @@ jQuery(document).ready(function()
           { "data": "no" },
           { "data": "name" },
           { "data": "description" },
-          { "data": "actions" },
+          { "data": "actions" }
       ]  
-
     });
+
+    jQuery('.nd-table').on('click','.editND',function(){
+      var id = jQuery(this).data('id');
+      console.log('edit', id)
+    });
+
+    jQuery('.nd-table').on('click','.deleteND',function(){
+      var id = jQuery(this).data('id');
+      console.log('delete', id)
+    });
+    
 
     jQuery.ajax({
       url: pluginPath + "nested-directory-tree.php?action=item_data",
@@ -29,11 +39,14 @@ jQuery(document).ready(function()
         jQuery('#nd-treeview').treeview({data: data})
         .on('nodeSelected', function(e, node){
             table.ajax.url(pluginPath + 'nested-directory-item.php?id='+node.id+'&action=table_data').load();
-            console.log(node.id)
+            // console.log(node)
         });
       }  
     });
+
+    
   }
+
 
   reloadNestedDirectory(0);
 

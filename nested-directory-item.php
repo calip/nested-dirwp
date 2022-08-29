@@ -54,7 +54,7 @@ if($_GET['action'] === 'table_data'){
           $nestedData['no'] = $no;
           $nestedData['name'] = $r['name'];
           $nestedData['description'] = $r['description'];
-          $nestedData['actions'] = "<a href='#' class='btn-warning btn-sm'>Ubah</a>&nbsp; <a href='#' class='btn-danger btn-sm'>Hapus</a>";
+          $nestedData['actions'] = "<a href='#' data-id='".$r['id']."' class='editND btn-warning btn-sm'>Edit</a>&nbsp; <a href='#'  data-id='".$r['id']."' class='deleteND btn-danger btn-sm'>Delete</a>";
           $data[] = $nestedData;
           $no++;
       }

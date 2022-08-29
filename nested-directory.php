@@ -116,24 +116,25 @@ function nested_directories_persons_page_handler()
 
             <div id="col-left">
                 <div class="col-wrap">
-                    <h2>Root</h2>
+                    <h2><?php echo __('Root')?></h2>
                     <div id="nd-treeview"></div>
                 </div>
             </div>
 
             <div id="col-right">
                 <div class="col-wrap">
-                    <h2><?php _e('Persons', 'nested_directories')?> <a class="add-new-h2"
-                                                    href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=persons_form');?>"><?php _e('Add new', 'nested_directories')?></a>
+                    <h2>
+                        <?php _e('Persons', 'nested_directories')?> 
+                        <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=persons_form');?>"><?php _e('Add new', 'nested_directories')?></a>
                     </h2>
                     <div class="table-responsive">
                         <table class="nd-table table-striped">
                             <thead>
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col"><?php echo __('No')?></th>
+                                <th scope="col"><?php echo __('Name')?></th>
+                                <th scope="col"><?php echo __('Description')?></th>
+                                <th scope="col"><?php echo __('Actions')?></th>
                             </tr>
                             </thead>
                             <tbody>

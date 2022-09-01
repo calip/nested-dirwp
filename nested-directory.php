@@ -105,9 +105,42 @@ function nested_directories_admin_menu()
 
 add_action('admin_menu', 'nested_directories_admin_menu');
 
+function buildNestedDirectoryTree(Array $data, $parent = 0) {
+    $tree = array();
+    foreach ($data as $d) {
+        if ($d['parent_id'] == $parent) {
+            $children = buildNestedDirectoryTree($data, $d['id']);
+            // set a trivial key
+            if (!empty($children)) {
+                $d['_children'] = $children;
+            }
+            $tree[] = $d;
+        }
+    }
+    return $tree;
+}
+
+function printTree($tree, $r = 0, $p = null) {
+    foreach ($tree as $i => $t) {
+        $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) .' ';
+        printf("\t<option value='%d'>%s%s</option>\n", $t['id'], $dash, $t['title']);
+        if ($t['parent_id'] == $p) {
+            // reset $r
+            $r = 0;
+        }
+        if (isset($t['_children'])) {
+            printTree($t['_children'], ++$r, $t['parent_id']);
+        }
+    }
+}
+
+
 function nested_directories_persons_page_handler()
 {
     global $wpdb;
+    $directory = $wpdb->get_results("SELECT * FROM wp_nested_directory", ARRAY_A);
+    $tree = buildNestedDirectoryTree($directory);
+    add_thickbox();
     ?>
     <div class="wrap nosubsub">
         <h1 class="wp-heading-inline">Nested Directory</h1>
@@ -116,10 +149,36 @@ function nested_directories_persons_page_handler()
 
             <div id="col-left">
                 <div class="col-wrap">
-                    <h2><?php echo __('Root')?></h2>
+                    <h2>
+                        <?php echo __('Root')?>
+                        <a title="Your Modal Title" class="thickbox add-new-h2" href="#TB_inline?width=400&height=300&inlineId=modal-category-nd"><?php _e('Add new', 'new_category_nested_directories')?></a>
+                    </h2>
+
                     <div id="nd-treeview"></div>
+
+                    <div id="modal-category-nd" style="display:none;">
+                        <div class="nd-thickbox">
+                            <label><?php echo __('Title')?></label>
+                            <input type="text" name="nd-tree-title" id="nd-tree-title" class="input-control">
+                        </div>
+                        <div class="nd-thickbox">
+                            <label><?php echo __('Parent')?></label>
+                            <select name="nd-tree-parent" id="nd-tree-parent" class="input-control">
+                                <option value="0">-</option>
+                                <?php echo printTree($tree); ?>
+                            </select>
+                        </div>
+                        <div class="nd-thickbox">
+                            <label><?php echo __('Description')?></label>
+                            <textarea name="nd-tree-description" rows="5" id="nd-tree-description" class="input-control"></textarea>
+                        </div>
+                        <div class="nd-thickbox">
+                            <label>&nbsp;</label>
+                            <button id="nd-submit"><?php echo __('Save')?></button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div> 
 
             <div id="col-right">
                 <div class="col-wrap">
@@ -172,8 +231,15 @@ function nested_directory_admin_add_resources() {
     wp_register_style( 'nested_directory_style_treeview', plugins_url( 'styles/nd.treeview.min.css', __FILE__ ) );
     wp_enqueue_style( 'nested_directory_style_datatable' );
 
+    wp_register_style( 'nested_directory_style_nd', plugins_url( 'styles/nd.css', __FILE__ ) );
+    wp_enqueue_style( 'nested_directory_style_nd' );
+
     wp_register_script('nested_directory_admin', plugins_url('nested_directory_admin.js', __FILE__) );
     wp_enqueue_script('nested_directory_admin');
+
+    wp_enqueue_script( 'nd-thickbox' );
+ 
+    wp_enqueue_style( 'nd-thickbox' );
 }
 
 add_action('init', 'nested_directories_plugin');

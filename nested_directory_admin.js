@@ -14,7 +14,8 @@ jQuery(document).ready(function()
     console.log('delete', id)
   });
 
-  jQuery('#nd-submit').click(function() {
+  // tree form
+  jQuery('#nd-tree-submit').click(function() {
     var title = jQuery('#nd-tree-title').val();
     var description = jQuery('#nd-tree-description').val();
     var parent = jQuery('#nd-tree-parent').val();
@@ -35,6 +36,42 @@ jQuery(document).ready(function()
     
     jQuery.ajax({
       url: pluginPath + "nested-directory-form-tree.php?action=post_tree",
+      method:"POST",
+      data: postForm,
+      dataType: "json",      
+      success: function(data) {
+        reloadNestedDirectory();
+        self.parent.tb_remove();
+      }
+    });
+  });
+
+  //item form
+  jQuery('#nd-item-submit').click(function() {
+    var title = jQuery('#nd-item-title').val();
+    var location = jQuery('#nd-item-location').val();
+    var website = jQuery('#nd-item-website').val();
+    var description = jQuery('#nd-item-description').val();
+    var category = jQuery('#nd-item-category').val();
+
+    if (title == "") {
+      jQuery('#nd-item-title').addClass('nd-error');
+      setTimeout(function() {
+        jQuery('#nd-item-title').removeClass('nd-error');
+      }, 1000);
+      return false;
+    }
+
+    var postForm = {
+      title: title,
+      location: location,
+      website: website,
+      category: category,
+      description: description,
+    };
+    
+    jQuery.ajax({
+      url: pluginPath + "nested-directory-form-item.php?action=post_item",
       method:"POST",
       data: postForm,
       dataType: "json",      
@@ -71,13 +108,9 @@ jQuery(document).ready(function()
       dataType: "json",      
       success: function(data) {
         reloadTableNestedDirectory();
-        jQuery('#nd-treeview').treeview({data: [{
-            "id": "1",
-            "name": "Main",
-            "text": "Main",
-            "parent_id": null,
-        }]})
+        jQuery('#nd-treeview').treeview({data: data})
         .on('nodeSelected', function(e, node){
+            jQuery('#nd-item-category').val(node.id);
             table.ajax.url(pluginPath + 'nested-directory-item.php?id='+node.id+'&action=table_data').load();
         });
       }  

@@ -151,7 +151,7 @@ function nested_directories_persons_page_handler()
                 <div class="col-wrap">
                     <h2>
                         <?php echo __('Root')?>
-                        <a title="Your Modal Title" class="thickbox add-new-h2" href="#TB_inline?width=400&height=300&inlineId=modal-category-nd"><?php _e('Add new', 'new_category_nested_directories')?></a>
+                        <a title="Add New Category" class="thickbox add-new-h2" href="#TB_inline?width=400&height=300&inlineId=modal-category-nd"><?php _e('Add new', 'new_category_nested_directories')?></a>
                     </h2>
 
                     <div id="nd-treeview"></div>
@@ -174,7 +174,7 @@ function nested_directories_persons_page_handler()
                         </div>
                         <div class="nd-thickbox">
                             <label>&nbsp;</label>
-                            <button id="nd-submit"><?php echo __('Save')?></button>
+                            <button id="nd-tree-submit"><?php echo __('Save')?></button>
                         </div>
                     </div>
                 </div>
@@ -184,7 +184,7 @@ function nested_directories_persons_page_handler()
                 <div class="col-wrap">
                     <h2>
                         <?php _e('Persons', 'nested_directories')?> 
-                        <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=persons_form');?>"><?php _e('Add new', 'nested_directories')?></a>
+                        <a title="Add New Item" class="thickbox add-new-h2" href="#TB_inline?width=400&height=300&inlineId=modal-item-nd"><?php _e('Add new', 'nested_directories')?></a>
                     </h2>
                     <div class="table-responsive">
                         <table class="nd-table table-striped">
@@ -200,6 +200,30 @@ function nested_directories_persons_page_handler()
                             <!-- List Data Menggunakan DataTable -->              
                             </tbody>
                         </table>
+                    </div>
+
+                    <div id="modal-item-nd" style="display:none;">
+                        <div class="nd-thickbox">
+                            <label><?php echo __('Title')?></label>
+                            <input type="hidden" name="nd-item-category" id="nd-item-category" class="input-control">
+                            <input type="text" name="nd-item-title" id="nd-item-title" class="input-control">
+                        </div>
+                        <div class="nd-thickbox">
+                            <label><?php echo __('Location')?></label>
+                            <input type="text" name="nd-item-location" id="nd-item-location" class="input-control">
+                        </div>
+                        <div class="nd-thickbox">
+                            <label><?php echo __('Website')?></label>
+                            <input type="text" name="nd-item-website" id="nd-item-website" class="input-control">
+                        </div>
+                        <div class="nd-thickbox">
+                            <label><?php echo __('Description')?></label>
+                            <textarea name="nd-item-description" rows="5" id="nd-item-description" class="input-control"></textarea>
+                        </div>
+                        <div class="nd-thickbox">
+                            <label>&nbsp;</label>
+                            <button id="nd-item-submit"><?php echo __('Save')?></button>
+                        </div>
                     </div>
                 </div>
             </div>

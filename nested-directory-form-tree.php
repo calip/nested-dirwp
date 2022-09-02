@@ -11,14 +11,12 @@ if($_GET['action'] === 'post_tree'){
     'description'   => $_POST['description']
   ));
 
-  // print_r($nd_table_directory);
   if(! empty($db_success))
   {
-    print_r($db_success);
+    echo $db_success;
   }
   else
   {
-    print_r('Failed');
+    echo 'Failed';
   }
-  // echo "success";
 }

@@ -71,12 +71,7 @@ jQuery(document).ready(function()
       dataType: "json",      
       success: function(data) {
         reloadTableNestedDirectory();
-        jQuery('#nd-treeview').treeview({data: [{
-            "id": "1",
-            "name": "Main",
-            "text": "Main",
-            "parent_id": null,
-        }]})
+        jQuery('#nd-treeview').treeview({data: data})
         .on('nodeSelected', function(e, node){
             table.ajax.url(pluginPath + 'nested-directory-item.php?id='+node.id+'&action=table_data').load();
         });

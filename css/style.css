@@ -1,0 +1,485 @@
+/* animations */
+
+@-webkit-keyframes loader{ 
+	from { width: 0%; margin-left: 0%; }
+	50%  { width: 100%; margin-left: 0%;}
+	to  { width: 0; margin-left: 100%; }
+}
+@-moz-keyframes loader{ 
+	from { width: 0%; margin-left: 0%; }
+	50%  { width: 100%; margin-left: 0%;}
+	to  { width: 0; margin-left: 100%; }
+}
+@-ms-keyframes loader{ 
+	from { width: 0%; margin-left: 0%; }
+	50%  { width: 100%; margin-left: 0%;}
+	to  { width: 0; margin-left: 100%; }
+}
+@-o-keyframes loader{ 
+	from { width: 0%; margin-left: 0%; }
+	50%  { width: 100%; margin-left: 0%;}
+	to  { width: 0; margin-left: 100%; }
+}
+@keyframes loader{ 
+	from { width: 0%; margin-left: 0%; }
+	50%  { width: 100%; margin-left: 0%;}
+	to  { width: 0; margin-left: 100%; }
+}
+
+
+
+/* All */
+#ts-tree, #ts-tree * {
+	transition: all .5s ease;
+}
+#ts-tree {
+	height: 85%;
+	width: 100%;
+	display: block;
+	margin: 20px 20px 20px 0px;
+	position: fixed;
+}
+#ts-tree *{
+	box-sizing: border-box;
+	white-space: nowrap;
+}
+#ts-tree h3{
+	padding: 10px;
+	border-bottom: 1px solid #666;
+	color: #666;
+	margin: 10px;
+	position: relative;
+}
+
+
+/** tree **/
+#ts-tree .tree{
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 20%;
+	margin: 0 1% 0 0;
+	height: 100%;
+	overflow: auto;
+	background: #ffffff;
+	box-shadow: 2px 2px 2px 2px rgba(0 , 0 , 0 , .1);
+}
+#ts-tree .tree ul{
+	display: none;
+	margin: 0;
+}
+
+/* déplacement */
+#ts-tree .moveto{
+	background: #f1f1f1 !important;
+	border: 2px dashed #e1e1e1 !important;
+	margin-right:10px;
+	height: 30px;
+}
+
+/* first level*/
+#ts-tree .tree>ul{
+	height: auto;
+	display: block;
+}
+#ts-tree .tree ul.active{
+	display: block;
+	border-left: 2px solid #666;
+	margin-left: 10px;
+}
+#ts-tree .tree li{
+	margin: 10px 0px 10px 20px;
+	border-left: 2px solid #e1e1e1;
+	display: block;
+}
+#ts-tree .tree li.deployed{
+	border-left: 2px solid #999;
+}
+#ts-tree .tree .label{
+	padding: 3px 5px 3px 5px;
+	display: inline-block;
+	cursor: pointer;
+	overflow: hidden;
+	position: relative;
+}
+#ts-tree .tree li.deployed>.element .label{
+	font-weight: bold;
+	white-space: nowrap;
+}
+#ts-tree .tree li.deployed>ul{
+	display: block;
+}
+#ts-tree .tree li.undeployable>.element .label{
+	margin-left: 20px;
+	white-space: nowrap;
+	min-width: 90px;
+}
+#ts-tree .tree li.deployed>.element .label:hover,
+#ts-tree .tree li.undeployable>.element .label:hover,
+#ts-tree #content-zone .list li:hover{
+	background-color: #e1e1e1;
+	background-repeat: no-repeat;
+}
+#ts-tree .tree li.deployed>.element .label:hover,
+#ts-tree .tree li.undeployable>.element .label:hover,
+#ts-tree .tree li>.element .label:hover{
+	padding: 3px 80px 3px 5px;
+}
+#ts-tree .tree .btn-deploy {
+    display: inline-block;
+    float: left;
+    margin-top: 4px;
+}
+#ts-tree .tree li>.element .btn-deploy>*{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	text-align: center;
+}
+#ts-tree .tree li>.element .btn-deploy>*:hover{
+	background-color: #ccc;
+}
+#ts-tree .tree li>.element .btn-deploy .shrink{
+	display: none;
+}
+#ts-tree .tree li.deployed>.element .btn-deploy .shrink{
+	display: inline-block;
+}
+#ts-tree .tree li.deployed>.element .btn-deploy .grow{
+	display: none;
+}
+#ts-tree .tree .label.shown,
+#ts-tree .tree .label.shown:hover,
+#ts-tree #content-zone .list li.selected{
+	background: #00A99D !important;
+	color: #fff;
+}
+#ts-tree .tree .label .actions{
+	position: absolute;
+	right: -100%;
+	top: 0;
+	padding: 5px;
+}
+#ts-tree .tree .label:hover .actions{
+	right: 0%;	
+}
+#ts-tree #add-categorie-form.edit .add_cat_title{
+	display: none;
+}
+#ts-tree #add-categorie-form.add .edit_cat_title{
+	display: none;
+}
+#ts-tree #add-categorie-form .close{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	border-radius: 50%;
+	display: block;
+	padding : 5px 6px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
+#ts-tree #add-categorie-form .close:hover{
+	background: #e1e1e1;
+}
+#ts-tree #add-categorie-form{
+	display: block;
+	position: fixed;
+	z-index: 10;
+	box-shadow: 0 0 10px 10px rgba(0,0,0,.1);
+	background: #ffffff;
+	left: 50%;
+	top: 40%;
+	height: 50%;
+	margin-top: -100px;
+	margin-left: -200px;
+	width: 400px;
+	height: auto;
+	opacity: 0;
+	visibility: hidden;
+}
+#ts-tree #add-categorie-form>.content{
+	padding: 20px;
+}
+#ts-tree #add-categorie-form.shown{
+	opacity: 1;
+	visibility: visible;
+}
+#ts-tree #add-categorie-form>.content>div{
+	margin-bottom: 10px;
+}
+#ts-tree #add-categorie-form label{
+	display: inline-block;
+	width: 140px;
+}
+#ts-tree #add-categorie-form input{
+	display: inline-block;
+	width: calc( 100% - 140px );
+}
+#ts-tree #add-categorie-form textarea{
+	display: block;
+	width: 100%;
+	height: 100px;
+}
+
+#ts-tree #add-categorie-form .submit{
+	text-align: right;
+}
+#ts-tree #add-categorie-form [type=button]{
+	padding: 10px;
+	background-color: #00A99D !important;
+	cursor: pointer;
+	border: none;
+	float: right;
+	width: 100px;
+	background-image: url(./images/white_publish);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#ts-tree ol, #ts-tree li{
+	/*transition: all 0 ease;*/
+	transition-duration: 0 !important;
+	transition: none !important;
+}
+
+/* content */
+#ts-tree #content-zone{
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 21%;
+	width: 20%;
+	margin: 0 1% 0 0;
+	height: 100%;
+	overflow: auto;
+	background: #ffffff;
+	box-shadow: 2px 2px 2px 2px rgba(0 , 0 , 0 , .1);
+}
+#ts-tree #content-zone .list .back{
+	height: 0px;
+	overflow: hidden;
+	width: 100%;
+	cursor: pointer;
+	color: #00A99D;
+}
+#ts-tree #content-zone .list .back:hover{
+	background: #e1e1e1;
+}
+
+#ts-tree #content-zone .list li{
+	padding: 10px;
+	margin: 0 10px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: 90% center !important;
+}
+
+#ts-tree #content-zone .list .selector-container{
+	text-align: center;
+}
+#ts-tree #content-zone .list .selector{
+	background-repeat: no-repeat;
+	background-position: center !important;
+	width: 14%;
+	height: 30px;
+	display: inline-block;
+	margin: 0 2%;
+	border: 1px solid #ccc;
+	cursor: pointer;
+}
+#ts-tree #content-zone .list .selector.selected{
+	background-repeat: no-repeat;
+	background-position: center !important;
+	border: 1px solid #00A99D;
+	background: #00A99D;
+}
+#ts-tree #content-zone .list li.draft,
+#ts-tree #content-zone .list .selector.draft{
+	background-image: url(./images/gray_draft);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.draft.selected,
+#ts-tree #content-zone .list .selector.draft.selected
+{
+	background-image: url(./images/white_draft);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.pending,
+#ts-tree #content-zone .list .selector.pending{
+	background-image: url(./images/gray_pending);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.pending.selected,
+#ts-tree #content-zone .list .selector.pending.selected
+{
+	background-image: url(./images/white_pending);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.future,
+#ts-tree #content-zone .list .selector.future{
+	background-image: url(./images/gray_future);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.future.selected,
+#ts-tree #content-zone .list .selector.future.selected
+{
+	background-image: url(./images/white_future);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.private,
+#ts-tree #content-zone .list .selector.private{
+	background-image: url(./images/gray_private);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.private.selected,
+#ts-tree #content-zone .list .selector.private.selected
+{
+	background-image: url(./images/white_private);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.publish,
+#ts-tree #content-zone .list .selector.publish{
+	background-image: url(./images/gray_publish);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list li.publish.selected,
+#ts-tree #content-zone .list .selector.publish.selected
+{
+	background-image: url(./images/white_publish);
+	background-repeat: no-repeat;
+}
+#ts-tree #content-zone .list p{
+	margin: 10px;
+}
+#ts-tree #content-zone [data-cat=""]{
+	display: none;
+}
+
+
+/** post mode */
+#ts-tree.post-mode .tree{
+	width: 0px;
+	opacity: 0;
+	margin: 0px;
+}
+
+#ts-tree.post-mode #content-zone{
+	left: 0px;
+}
+#ts-tree.post-mode #content-zone .list .back{
+	height: 40px;
+	padding: 10px;
+}
+
+#ts-tree.post-mode #edit-content{
+	width: 79%;
+	left: 20%;
+}
+#ts-tree #edit-content>*{
+	width: 100%;
+	height: 100%;
+}
+
+#ts-tree .post{
+	position: relative;
+	overflow: hidden;
+}
+#ts-tree .post .action{
+	position: absolute;
+	right: -100%;
+	top: 0px;
+	background-color: #e1e1e1;
+	overflow: hidden;
+	width: auto;
+	height: 100%
+}
+#ts-tree .post:hover .action{
+	right: 0;
+}
+#ts-tree .action>*{
+	height: auto;
+	whidth: 30px;
+	margin: 10px 5px;
+	display: inline-block;
+	color:#666;
+}
+#ts-tree .action>*:hover{
+	color: #00A99D;
+}
+
+
+
+#wpbody-content{
+	display: block !important;
+    height: 100% !important;
+    min-height: 100px !important;
+    overflow: visible !important;
+    padding-bottom: 65px !important;
+    width: 100% !important;
+    position: absolute !important;
+}
+
+
+#ts-tree #edit-content{
+	min-height: 200px;
+	width: 58%;
+	margin: 0 0 0 1%;
+	position: absolute;
+	left: 41%;
+	height: 100%;
+}
+
+#ts-tree #edit-content.loading{
+	opacity: 0;
+}
+
+#wpbody{
+	height: 100%;
+}
+
+
+
+/**** loader *****/
+.loader{
+	height: 2px;
+	background: #00A99D;
+	width: 100%;
+	margin: 0px;
+}
+.loader>div{
+	height: 100%;
+	margin-left: 100%;
+	width: 0%;
+	background-color: #ffffff;
+}
+.loading .loader>div{
+    animation: loader 1s infinite;
+}
+
+
+/**** ajouter un post ***/
+#ts-tree #content-zone [data-cat=""] #add-post,
+#ts-tree #content-zone [data-cat="trash"] #add-post{
+	display: none;
+}
+#ts-tree h3>span{
+	display: block;
+	position: absolute;
+	background: #00A99D;
+	padding: 5px;
+	height: 30px;
+	width: 30px;
+	top: 0px;
+	right: 0px;
+	cursor: pointer;
+	color: #666;
+	background: #e1e1e1;
+}
+#ts-tree h3>span:hover,
+#ts-tree h3>span.selected{
+	color: #ffffff;
+	background: #00A99D;
+}

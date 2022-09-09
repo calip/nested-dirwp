@@ -1,0 +1,18 @@
+/* tree */
+
+.hide-menus #wpadminbar , .hide-menus  #adminmenumain{
+	display: none;
+}
+
+.hide-menus #wpcontent{
+	margin: 0px !important;
+}
+
+html.wp-toolbar.hide-menus{
+	margin:0px;
+	padding: 0px
+}
+
+.hide-menus .wrap{
+	margin:0px !important!;
+}

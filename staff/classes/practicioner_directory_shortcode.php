@@ -37,7 +37,7 @@ class PracticionerDirectoryShortcode {
   	}
 
     $query_args = array(
-      'post_type' => 'practicioner-directory-master',
+      'post_type' => 'practicioner',
       'posts_per_page' => -1
     );
 

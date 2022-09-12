@@ -27,14 +27,14 @@
 
       var templateIndex = $(this).data('template-index');
       if(confirm("Are you sure you want to delete Custom Template " + (templateIndex) + "? This cannot be undone.")) {
-        window.location.href = "<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-settings&delete-template=" + templateIndex;
+        window.location.href = "<?php echo get_admin_url(); ?>edit.php?post_type=practicioner&page=practicioner-directory-settings&delete-template=" + templateIndex;
       }
     });
   });
 </script>
 
 <style type="text/css">
-  div.updated.staff-success-message {
+  div.updated.practicioner-success-message {
     margin-left: 0px;
     margin-top: 20px;
   }
@@ -51,17 +51,17 @@
   .custom-template-dropdown-arrow {
     text-decoration: none;
   }
-  .staff-template-textarea-wrapper {
+  .practicioner-template-textarea-wrapper {
     float: left;
     width: 40%;
   }
-  .staff-template-textarea-wrapper textarea {
+  .practicioner-template-textarea-wrapper textarea {
     height: 170px;
   }
 </style>
 
 <?php if($did_update_options): ?>
-  <div id="message" class="updated notice notice-success is-dismissible below-h2 staff-success-message">
+  <div id="message" class="updated notice notice-success is-dismissible below-h2 practicioner-success-message">
     <p>Settings updated.</p>
   </div>
 <?php endif; ?>
@@ -72,11 +72,11 @@
     <h2>Custom Details Fields</h2>
 
     <p>
-      This allows you to create custom details fields for each Staff member.
+      This allows you to create custom details fields for each Practicioner member.
       Name and bio fields are provided by default, so you don't need to add those here.
     </p>
 
-    <table class="widefat fixed" cellspacing="0" id="staff-meta-fields">
+    <table class="widefat fixed" cellspacing="0" id="practicioner-meta-fields">
       <thead>
         <tr>
           <th id="columnname" class="manage-column column-columnname" scope="col">Name</th>
@@ -96,13 +96,13 @@
       </tfoot>
 
       <tbody>
-        <?php foreach(get_option('staff_meta_fields') as $field): ?>
+        <?php foreach(get_option('practicioner_meta_fields') as $field): ?>
           <tr class="column-<?php echo $field['slug']; ?>">
             <td>
-              <input type="text" name="staff_meta_fields_labels[]" value="<?php echo $field['name']; ?>" />
+              <input type="text" name="practicioner_meta_fields_labels[]" value="<?php echo $field['name']; ?>" />
             </td>
             <td>
-              <select name="staff_meta_fields_types[]">
+              <select name="practicioner_meta_fields_types[]">
                 <?php if($field['type'] == 'text'): ?>
                   <option value="text" selected>text field</option>
                   <option value="textarea">text area</option>
@@ -130,10 +130,10 @@
         </tr>
         <tr id="new-field-template">
           <td>
-            <input type="text" name="staff_meta_fields_labels[]" />
+            <input type="text" name="practicioner_meta_fields_labels[]" />
           </td>
           <td>
-            <select name="staff_meta_fields_types[]">
+            <select name="practicioner_meta_fields_types[]">
               <option value="text">text field</option>
               <option value="teaxtarea">text area</option>
             </select>
@@ -150,24 +150,24 @@
   <div class="form-group">
     <h2>Templates</h2>
 
-    <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-template-tags">Staff Help page</a></p>
+    <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=practicioner&page=practicioner-directory-help#practicioner-template-tags">Practicioner Help page</a></p>
 
-    <p>Templates can be chosen manually with the [staff-directory] shortcode (slugs shown in parentheses), or you can choose to set a default template here:</p>
+    <p>Templates can be chosen manually with the [practicioner-directory] shortcode (slugs shown in parentheses), or you can choose to set a default template here:</p>
 
     <p>
       <?php if($current_template == 'list'): ?>
-        <input type="radio" name="staff_templates[slug]" value="list" checked />
+        <input type="radio" name="practicioner_templates[slug]" value="list" checked />
       <?php else: ?>
-        <input type="radio" name="staff_templates[slug]" value="list" />
+        <input type="radio" name="practicioner_templates[slug]" value="list" />
       <?php endif; ?>
       List (list)
     </p>
 
     <p>
       <?php if($current_template == 'grid'): ?>
-        <input type="radio" name="staff_templates[slug]" value="grid" checked />
+        <input type="radio" name="practicioner_templates[slug]" value="grid" checked />
       <?php else: ?>
-        <input type="radio" name="staff_templates[slug]" value="grid" />
+        <input type="radio" name="practicioner_templates[slug]" value="grid" />
       <?php endif; ?>
       Grid (grid)
     </p>
@@ -177,22 +177,22 @@
     <?php endforeach; ?>
 
     <p>
-      <input type="radio" name="staff_templates[slug]" value="custom_<?php echo count($custom_templates) + 1; ?>" disabled>
+      <input type="radio" name="practicioner_templates[slug]" value="custom_<?php echo count($custom_templates) + 1; ?>" disabled>
       Custom Template <?php echo count($custom_templates) + 1; ?> (save template before you select) <a href="#" class="fa fa-angle-down custom-template-dropdown-arrow"></a>
     </p>
 
     <div class="custom-template">
-      <div class="staff-template-textarea-wrapper">
-        <label for="custom_staff_templates[<?php echo count($custom_templates) + 1; ?>][html]">HTML:</label>
+      <div class="practicioner-template-textarea-wrapper">
+        <label for="custom_practicioner_templates[<?php echo count($custom_templates) + 1; ?>][html]">HTML:</label>
         <p>
-          <textarea name="custom_staff_templates[<?php echo count($custom_templates) + 1; ?>][html]" class="large-text code"></textarea>
+          <textarea name="custom_practicioner_templates[<?php echo count($custom_templates) + 1; ?>][html]" class="large-text code"></textarea>
         </p>
       </div>
 
-      <div class="staff-template-textarea-wrapper">
-        <label for="custom_staff_templates[<?php echo count($custom_templates) + 1; ?>][css]">CSS:</label>
+      <div class="practicioner-template-textarea-wrapper">
+        <label for="custom_practicioner_templates[<?php echo count($custom_templates) + 1; ?>][css]">CSS:</label>
         <p>
-          <textarea name="custom_staff_templates[<?php echo count($custom_templates) + 1; ?>][css]" class="large-text code"></textarea>
+          <textarea name="custom_practicioner_templates[<?php echo count($custom_templates) + 1; ?>][css]" class="large-text code"></textarea>
         </p>
       </div>
     </div>

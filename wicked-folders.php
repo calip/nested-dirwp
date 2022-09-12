@@ -29,24 +29,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 if ( class_exists( 'Wicked_Folders' ) ) return;
 
 global $wpdb;
-$staff_directory_table = $wpdb->prefix . 'staff_directory';
+$practicioner_directory_table = $wpdb->prefix . 'practicioner_directory';
 
-define('STAFF_DIRECTORY_TABLE', $wpdb->prefix . 'staff_directory');
-define('STAFF_TEMPLATES', $wpdb->prefix . 'staff_directory_templates');
-define('STAFF_PHOTOS_DIRECTORY', WP_CONTENT_DIR . "/uploads/staff-photos/");
+define('PRACTICIONER_DIRECTORY_TABLE', $wpdb->prefix . 'practicioner_directory');
+define('PRACTICIONER_TEMPLATES', $wpdb->prefix . 'practicioner_directory_templates');
+define('PRACTICIONER_PHOTOS_DIRECTORY', WP_CONTENT_DIR . "/uploads/practicioner-photos/");
 
-require_once(dirname(__FILE__) . '/staff/classes/staff_settings.php');
+require_once(dirname(__FILE__) . '/staff/classes/practicioner_settings.php');
 
-StaffSettings::setupDefaults();
+PracticionerSettings::setupDefaults();
 
-require_once(dirname(__FILE__) . '/staff/classes/staff_directory.php');
-require_once(dirname(__FILE__) . '/staff/classes/staff_directory_shortcode.php');
-require_once(dirname(__FILE__) . '/staff/classes/staff_directory_admin.php');
+require_once(dirname(__FILE__) . '/staff/classes/practicioner_directory.php');
+require_once(dirname(__FILE__) . '/staff/classes/practicioner_directory_shortcode.php');
+require_once(dirname(__FILE__) . '/staff/classes/practicioner_directory_admin.php');
 
-StaffDirectory::register_post_types();
-StaffDirectory::set_default_meta_fields_if_necessary();
-StaffDirectoryAdmin::register_admin_menu_items();
-StaffDirectoryShortcode::register_shortcode();
+PracticionerDirectory::register_post_types();
+PracticionerDirectory::set_default_meta_fields_if_necessary();
+PracticionerDirectoryAdmin::register_admin_menu_items();
+PracticionerDirectoryShortcode::register_shortcode();
 
 require_once( dirname( __FILE__ ) . '/lib/class-wicked-folders.php' );
 

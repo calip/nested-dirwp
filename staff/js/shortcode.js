@@ -1,22 +1,22 @@
 jQuery(document).ready(function($) {
-  tinymce.create('tinymce.plugins.staff_directory_shortcode_plugin', {
+  tinymce.create('tinymce.plugins.practicioner_directory_shortcode_plugin', {
     init : function(ed, url) {
-      ed.addCommand('staff_directory_insert_shortcode', function() {
-        tb_show('Staff Directory Shortcode Options', 'admin-ajax.php?action=get_my_form');
+      ed.addCommand('practicioner_directory_insert_shortcode', function() {
+        tb_show('Practicioner Directory Shortcode Options', 'admin-ajax.php?action=get_my_form');
       });
-      ed.addButton('staff_directory_button', {title : 'Insert Staff Directory Shortcode', cmd : 'staff_directory_insert_shortcode', image: url + '/../images/wp-editor-icon.png' });
+      ed.addButton('practicioner_directory_button', {title : 'Insert Practicioner Directory Shortcode', cmd : 'practicioner_directory_insert_shortcode', image: url + '/../images/wp-editor-icon.png' });
     },
   });
-  tinymce.PluginManager.add('staff_directory_button', tinymce.plugins.staff_directory_shortcode_plugin);
+  tinymce.PluginManager.add('practicioner_directory_button', tinymce.plugins.practicioner_directory_shortcode_plugin);
 });
 
-StaffDirectory = {
+PracticionerDirectory = {
   formatShortCode: function(){
-    var categoryVal = jQuery('[name="staff-category"]').val();
-    var orderVal = jQuery('[name="staff-order"]').val();
-    var templateVal = jQuery('[name="staff-template"]').val();
+    var categoryVal = jQuery('[name="practicioner-category"]').val();
+    var orderVal = jQuery('[name="practicioner-order"]').val();
+    var templateVal = jQuery('[name="practicioner-template"]').val();
     
-    var shortcode = '[staff-directory';
+    var shortcode = '[practicioner-directory';
 
     if(categoryVal != '') {
       shortcode += ' cat=' + categoryVal;

@@ -12,7 +12,7 @@
                     <?php
                         if ( ! $is_pro_active && in_array( $post_type->name, $pro_post_types ) ) continue;
                         if ( ! $post_type->show_ui ) continue;
-                        if ( $post_type->name === 'staff') :
+                        if ( $post_type->name === 'practicioner') :
                     ?>
                     <label>
                         <input type="checkbox" name="post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>"<?php if ( in_array( $post_type->name, $enabled_posts_types ) ) echo ' checked="checked"'; ?>/>
@@ -121,7 +121,7 @@
                         if ( ! $is_pro_active && in_array( $post_type->name, $pro_post_types ) ) continue;
                         if ( in_array( $post_type->name, array( Wicked_Folders::get_plugin_post_type_name(), Wicked_Folders::get_gravity_forms_form_post_type_name(), Wicked_Folders::get_gravity_forms_entry_post_type_name(), 'tablepress_table' ) ) ) continue;
                         if ( ! $post_type->show_ui ) continue;
-                        if ( $post_type->name === 'staff') :
+                        if ( $post_type->name === 'practicioner') :
                     ?>
                     <label>
                         <input type="checkbox" name="dynamic_folder_post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>"<?php if ( in_array( $post_type->name, $dynamic_folders_enabled_posts_types ) ) echo ' checked="checked"'; ?><?php //if ( ! in_array( $post_type->name, $enabled_posts_types ) ) echo ' disabled="disabled"'; ?>/>

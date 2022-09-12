@@ -12,48 +12,15 @@
                     <?php
                         if ( ! $is_pro_active && in_array( $post_type->name, $pro_post_types ) ) continue;
                         if ( ! $post_type->show_ui ) continue;
+                        if ( $post_type->name === 'staff') :
                     ?>
                     <label>
                         <input type="checkbox" name="post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>"<?php if ( in_array( $post_type->name, $enabled_posts_types ) ) echo ' checked="checked"'; ?>/>
                         <?php echo esc_html( $post_type->label ); ?>
                     </label>
                     <br />
+                    <?php endif ?>
                 <?php endforeach; ?>
-                <?php if ( ! $is_pro_active && Wicked_Folders::is_upsell_enabled() ) : ?>
-                    <?php foreach ( $post_types as $post_type ) : ?>
-                        <?php
-                            if ( ! in_array( $post_type->name, $pro_post_types ) ) continue;
-                            if ( ! $post_type->show_ui ) continue;
-                        ?>
-                        <label>
-                            <input type="checkbox" name="post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>" disabled="disabled" />
-                            <?php echo esc_html( $post_type->label ); ?>
-                        </label>
-                        <br />
-                    <?php endforeach; ?>
-                    <label>
-                        <input type="checkbox" name="post_type[]" value="wf_plugin" disabled="disabled" />
-                        <?php _e( 'Plugins', 'wicked-folders' ); ?>
-                    </label>
-                    <br />
-                    <label>
-                        <input type="checkbox" name="post_type[]" value="wf_user" disabled="disabled" />
-                        <?php _e( 'Users', 'wicked-folders' ); ?>
-                    </label>
-                    <br />
-                    <?php if ( $is_gravity_forms_active ) : ?>
-                        <label>
-                            <input type="checkbox" name="post_type[]" value="wf_gf_entry" disabled="disabled" />
-                            <?php _e( 'Gravity Forms Entries', 'wicked-folders' ); ?>
-                        </label>
-                        <br />
-                        <label>
-                            <input type="checkbox" name="post_type[]" value="wf_gf_form" disabled="disabled" />
-                            <?php _e( 'Gravity Forms Forms', 'wicked-folders' ); ?>
-                        </label>
-                        <br />
-                    <?php endif; ?>
-                <?php endif; ?>
             </td>
         </tr>
         <tr>
@@ -141,7 +108,7 @@
             </td>
         </tr>
     </table>
-    <h2><?php _e( 'Dynamic Folders', 'wicked-folders' ); ?></h2>
+    <!-- <h2><?php _e( 'Dynamic Folders', 'wicked-folders' ); ?></h2>
     <p><?php _e( 'Dynamic folders are generated on the fly based on your content.  They are useful for finding content based on things like date, author, etc.', 'wicked-folders' ); ?></p>
     <table class="form-table">
         <tr>
@@ -154,15 +121,17 @@
                         if ( ! $is_pro_active && in_array( $post_type->name, $pro_post_types ) ) continue;
                         if ( in_array( $post_type->name, array( Wicked_Folders::get_plugin_post_type_name(), Wicked_Folders::get_gravity_forms_form_post_type_name(), Wicked_Folders::get_gravity_forms_entry_post_type_name(), 'tablepress_table' ) ) ) continue;
                         if ( ! $post_type->show_ui ) continue;
+                        if ( $post_type->name === 'staff') :
                     ?>
                     <label>
                         <input type="checkbox" name="dynamic_folder_post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>"<?php if ( in_array( $post_type->name, $dynamic_folders_enabled_posts_types ) ) echo ' checked="checked"'; ?><?php //if ( ! in_array( $post_type->name, $enabled_posts_types ) ) echo ' disabled="disabled"'; ?>/>
                         <?php echo esc_html( $post_type->label ); ?>
                     </label>
                     <br />
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </td>
-        </tr>
+        </tr> -->
         <?php /* ?>
         <th scope="row">
             <?php _e( 'Tree View', 'wicked-folders' ); ?>

@@ -119,7 +119,19 @@ class PracticionerDirectory {
         <?php if($field['type'] == 'text'): ?>
           <input type="text" name="practicioner_meta[<?php echo $field['slug'] ?>]" value="<?php echo get_post_meta($post->ID, $field['slug'], true); ?>" />
         <?php elseif($field['type'] == 'textarea'): ?>
-          <textarea cols=40 rows=5 name="practicioner_meta[<?php echo $field['slug'] ?>]"><?php echo get_post_meta($post->ID, $field['slug'], true); ?></textarea>
+          <?php
+          $content = get_post_meta($post->ID, $field['slug'], true);
+          $custom_editor_id = "certificationeditor";
+          $custom_editor_name = "practicioner_meta[". $field['slug'] ."]";
+          $args = array(
+              'media_buttons' => false,
+              'textarea_name' => $custom_editor_name,
+              'textarea_rows' => get_option('default_post_edit_rows', 10),
+              'quicktags' => false
+            );
+          wp_editor( $content, $custom_editor_id, $args );
+          ?>
+          <!-- <textarea cols=40 rows=5 name="practicioner_meta[<?php echo $field['slug'] ?>]"><?php echo get_post_meta($post->ID, $field['slug'], true); ?></textarea> -->
         <?php endif; ?>
       </p>
     <?php endforeach; ?>
@@ -148,25 +160,30 @@ class PracticionerDirectory {
     if($current_meta_fields == NULL || $current_meta_fields = '') {
       $default_meta_fields = array(
         array(
-          'name' => 'Position',
+          'name' => 'Location',
           'type' => 'text',
-          'slug' => 'position'
-        ),
-        array(
-          'name' => 'Email',
-          'type' => 'text',
-          'slug' => 'email'
-        ),
-        array(
-          'name' => 'Phone Number',
-          'type' => 'text',
-          'slug' => 'phone_number'
+          'slug' => 'location'
         ),
         array(
           'name' => 'Website',
           'type' => 'text',
           'slug' => 'website'
-        )
+        ),
+        array(
+          'name' => 'Profile Text',
+          'type' => 'text',
+          'slug' => 'profile_text'
+        ),
+        array(
+          'name' => 'Profile Link',
+          'type' => 'text',
+          'slug' => 'profile_link'
+        ),
+        array(
+          'name' => 'Certification Info',
+          'type' => 'textarea',
+          'slug' => 'certification'
+        ),
       );
       update_option('practicioner_meta_fields', $default_meta_fields);
     }

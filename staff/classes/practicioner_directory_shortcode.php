@@ -106,7 +106,7 @@ class PracticionerDirectoryShortcode {
           line-height: 1em;
           margin-bottom: 4px;
         }
-        .single-practicioner .position {
+        .single-practicioner .location {
           font-size: .9em;
           line-height: .9em;
           margin-bottom: 10px;
@@ -134,7 +134,7 @@ EOT;
       $wp_query->the_post();
 
       $name = get_the_title();
-      $position = get_post_meta(get_the_ID(), 'position', true);
+      $location = get_post_meta(get_the_ID(), 'location', true);
       $bio = get_the_content();
 
       if(has_post_thumbnail()) {
@@ -145,17 +145,22 @@ EOT;
         $photo_html = '';
       }
 
-      if(get_post_meta(get_the_ID(), 'email', true) != '') {
-        $email = get_post_meta(get_the_ID(), 'email', true);
-        $email_html = '<div class="email">Email: <a href="mailto:' . $email . '">' . $email . '</a></div>';
+      if(get_post_meta(get_the_ID(), 'profile_text', true) != '') {
+        $profile_text_html = get_post_meta(get_the_ID(), 'profile_text', true);
       } else {
-        $email_html = '';
+        $profile_text_html = '';
       }
 
-      if(get_post_meta(get_the_ID(), 'phone', true) != '') {
-        $phone_html = '<div class="phone">Phone: ' . get_post_meta(get_the_ID(), 'phone', true) . '</div>';
+      if(get_post_meta(get_the_ID(), 'profile_link', true) != '') {
+        $profile_link_html = get_post_meta(get_the_ID(), 'profile_link', true);
       } else {
-        $phone_html = '';
+        $profile_link_html = '';
+      }
+
+      if(get_post_meta(get_the_ID(), 'certification', true) != '') {
+        $certification_html = get_post_meta(get_the_ID(), 'certification', true);
+      } else {
+        $certification_html = '';
       }
 
       if(get_post_meta(get_the_ID(), 'website', true) != '') {
@@ -169,11 +174,12 @@ EOT;
         <div class="single-practicioner">
           $photo_html
           <div class="name">$name</div>
-          <div class="position">$position</div>
+          <div class="location">$location</div>
           <div class="bio">$bio</div>
-          $email_html
-          $phone_html
           $website_html
+          $profile_text_html
+          $profile_link_html
+          $certification_html
           <div class="clearfix"></div>
         </div>
 EOT;
@@ -218,7 +224,7 @@ EOT;
       $wp_query->the_post();
 
       $name = get_the_title();
-      $position = get_post_meta(get_the_ID(), 'position', true);
+      $location = get_post_meta(get_the_ID(), 'location', true);
 
       if(has_post_thumbnail()) {
         $attachment_array = wp_get_attachment_image_src(get_post_thumbnail_id());
@@ -232,7 +238,7 @@ EOT;
         <div class="single-practicioner">
           $photo_html
           <div class="name">$name</div>
-          <div class="position">$position</div>
+          <div class="location">$location</div>
         </div>
 EOT;
     }
@@ -273,9 +279,13 @@ EOT;
         $photo_tag = "";
       }
 
-      $practicioner_email = get_post_meta(get_the_ID(), 'email', true);
-      $practicioner_email_link = $practicioner_email != '' ? "<a href=\"mailto:$practicioner_email\">Email $practicioner_name</a>" : "";
-      $practicioner_phone_number = get_post_meta(get_the_ID(), 'phone_number', true);
+      $practicioner_location = get_post_meta(get_the_ID(), 'location', true);
+      $practicioner_profile_text = get_post_meta(get_the_ID(), 'profile_text', true);
+      $practicioner_profile = get_post_meta(get_the_ID(), 'profile_link', true);
+      $practicioner_profile_link = $practicioner_profile != '' ? "<a href=\"$practicioner_profile\" target=\"_blank\">View profile</a>" : "";
+      $practicioner_certification = get_post_meta(get_the_ID(), 'certification', true);
+      // $practicioner_email_link = $practicioner_email != '' ? $practicioner_email : "";
+      // $practicioner_phone_number = get_post_meta(get_the_ID(), 'phone_number', true);
       $practicioner_bio = get_the_content();
       $practicioner_website = get_post_meta(get_the_ID(), 'website', true);
       $practicioner_website_link = $practicioner_website != '' ? "<a href=\"$practicioner_website\" target=\"_blank\">View website</a>" : "";
@@ -283,8 +293,8 @@ EOT;
       $accepted_single_tags = array("[name]", "[photo_url]", "[bio]");
   		$replace_single_values = array($practicioner_name, $photo_url, $practicioner_bio);
 
-  		$accepted_formatted_tags = array("[name_header]", "[photo]", "[email_link]", "[bio_paragraph]", "[website_link]");
-  		$replace_formatted_values = array("<h3>$practicioner_name</h3>", $photo_tag, $practicioner_email_link, "<p>$practicioner_bio</p>", $practicioner_website_link);
+  		$accepted_formatted_tags = array("[name_header]", "[photo]", "[location]", "[bio_paragraph]", "[profile_text]", "[profile_link]", "[certification]", "[website_link]");
+  		$replace_formatted_values = array("<h3>$practicioner_name</h3>", $photo_tag, $practicioner_location, "<p>$practicioner_bio</p>", $profile_text, $profile_link, $certification, $practicioner_website_link);
 
   		$current_practicioner_markup = str_replace($accepted_single_tags, $replace_single_values, $loop_markup);
   		$current_practicioner_markup = str_replace($accepted_formatted_tags, $replace_formatted_values, $current_practicioner_markup);

@@ -280,21 +280,8 @@ EOT;
       $practicioner_website = get_post_meta(get_the_ID(), 'website', true);
       $practicioner_website_link = $practicioner_website != '' ? "<a href=\"$practicioner_website\" target=\"_blank\">View website</a>" : "";
 
-      $practicioner_categories = wp_get_post_terms(get_the_ID(), 'practicioner_category');
-      $all_practicioner_categories = "";
-
-      if (count($practicioner_categories) > 0) {
-        $practicioner_category = $practicioner_categories[0]->name;
-        foreach($practicioner_categories as $category) {
-          $all_practicioner_categories .= $category->name . ", ";
-        }
-        $all_practicioner_categories = substr($all_practicioner_categories, 0, strlen($all_practicioner_categories) - 2);
-      } else {
-        $practicioner_category = "";
-      }
-
-      $accepted_single_tags = array("[name]", "[photo_url]", "[bio]", "[category]", "[category all=true]");
-  		$replace_single_values = array($practicioner_name, $photo_url, $practicioner_bio, $practicioner_category, $all_practicioner_categories);
+      $accepted_single_tags = array("[name]", "[photo_url]", "[bio]");
+  		$replace_single_values = array($practicioner_name, $photo_url, $practicioner_bio);
 
   		$accepted_formatted_tags = array("[name_header]", "[photo]", "[email_link]", "[bio_paragraph]", "[website_link]");
   		$replace_formatted_values = array("<h3>$practicioner_name</h3>", $photo_tag, $practicioner_email_link, "<p>$practicioner_bio</p>", $practicioner_website_link);

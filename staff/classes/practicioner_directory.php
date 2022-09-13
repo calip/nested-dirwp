@@ -8,11 +8,8 @@ class PracticionerDirectory {
 
   static function register_post_types() {
     add_action('init', array('PracticionerDirectory', 'create_post_types'));
-    // add_action('init', array('PracticionerDirectory', 'create_practicioner_taxonomies'));
     add_filter("manage_edit-practicioner_columns", array('PracticionerDirectory', 'set_practicioner_admin_columns'));
     add_filter("manage_practicioner_posts_custom_column", array('PracticionerDirectory', 'custom_practicioner_admin_columns'), 10, 3);
-    // add_filter("manage_edit-practicioner_category_columns", array('PracticionerDirectory', 'set_practicioner_category_columns'));
-    // add_filter("manage_practicioner_category_custom_column", array('PracticionerDirectory', 'custom_practicioner_category_columns'), 10, 3);
     add_filter('enter_title_here', array('PracticionerDirectory', 'practicioner_title_text'));
     add_filter('admin_head', array('PracticionerDirectory', 'remove_media_buttons'));
     add_action('add_meta_boxes_practicioner', array('PracticionerDirectory', 'add_practicioner_custom_meta_boxes'));
@@ -41,30 +38,6 @@ class PracticionerDirectory {
       )
     );
   }
-
-  // static function create_practicioner_taxonomies() {
-  //   register_taxonomy('practicioner_category', 'practicioner', array(
-  // 		'hierarchical' => true,
-  // 		'labels' => array(
-  // 			'name' => _x( 'Practicioner Category', 'taxonomy general name' ),
-  // 			'singular_name' => _x( 'practicioner-category', 'taxonomy singular name' ),
-  // 			'search_items' =>  __( 'Search Practicioner Categories' ),
-  // 			'all_items' => __( 'All Practicioner Categories' ),
-  // 			'parent_item' => __( 'Parent Practicioner Category' ),
-  // 			'parent_item_colon' => __( 'Parent Practicioner Category:' ),
-  // 			'edit_item' => __( 'Edit Practicioner Category' ),
-  // 			'update_item' => __( 'Update Practicioner Category' ),
-  // 			'add_new_item' => __( 'Add New Practicioner Category' ),
-  // 			'new_item_name' => __( 'New Practicioner Category Name' ),
-  // 			'menu_name' => __( 'Practicioner Categories' ),
-  // 		),
-  // 		'rewrite' => array(
-  // 			'slug' => 'practicioner-categories',
-  // 			'with_front' => false,
-  // 			'hierarchical' => true
-  // 		),
-  // 	));
-  // }
 
   static function set_practicioner_admin_columns() {
     $new_columns = array(
@@ -95,30 +68,6 @@ class PracticionerDirectory {
     }
     echo $out;
   }
-
-  // static function set_practicioner_category_columns() {
-  //   $new_columns = array(
-  // 	  'cb' => '<input type="checkbox" />',
-  // 	  'name' => __('Name'),
-  //     'id' => __('ID'),
-  // 		'description' => __('Description'),
-  //     'slug' => __('Slug'),
-  //     'posts' => __('Posts')
-  // 	);
-  // 	return $new_columns;
-  // }
-
-  // static function custom_practicioner_category_columns($out, $column_name, $theme_id) {
-  //     switch ($column_name) {
-  //         case 'id':
-  //             $out .= $theme_id;
-  //             break;
-
-  //         default:
-  //             break;
-  //     }
-  //     return $out;
-  // }
 
   static function enqueue_fontawesome() {
     wp_enqueue_style('font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', array(), '4.0.3');

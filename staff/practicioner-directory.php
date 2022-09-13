@@ -6,6 +6,11 @@ Template
 
     [name_header]
     [bio_paragraph]
+    [location]
+    [website]
+    [profile_text]
+    [profile_link]
+    [certification]
 
     <div class="practicioner-directory-divider"></div>
 

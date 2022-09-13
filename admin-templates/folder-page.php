@@ -1,7 +1,7 @@
 <div id="wicked-folders-page" class="wrap">
     <h1 class="wp-heading-inline">
         <?php echo esc_html( $post_type_object->labels->singular_name ); ?>
-        <?php _e( 'Folders', 'wicked-folders' ); ?>
+        <?php _e( 'Locations', 'wicked-folders' ); ?>
     </h1>
     <?php
         if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
@@ -47,7 +47,7 @@
                         <?php if ( 'dynamic_root' == $active_folder_id ) : ?>
                             <div class="wicked-dynamic-folders-intro">
                                 <p class="wicked-icon"><span class="wicked-fa wicked-fa-magic"></span></p>
-                                <h1>Dynamic Folders</h1>
+                                <h1>Dynamic Locations</h1>
                                 <p class="wicked-large"><?php _e( 'Dynamic folders are generated on the fly based on your content.  They are useful for finding content based on things like date, author, etc.', 'wicked-folders' ); ?></p>
                                 <p><?php echo sprintf( 'Don\'t want to see dynamic folders?  You can turn them off in the %1$ssettings%2$s.', '<a href="' . esc_url( menu_page_url( 'wicked_folders_settings', 0 ) ) . '">', '</a>' ); ?></p>
                             </div>

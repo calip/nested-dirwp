@@ -2379,7 +2379,7 @@
                             });
                             view.render();
                             // TODO: l10n
-                            view.flashMessage( 'Folder added.' );
+                            view.flashMessage( 'Location added.' );
                             view.$( '[name="wicked_folder_name"]' ).get( 0 ).focus();
                         }
                         view.setSaveButtonState();

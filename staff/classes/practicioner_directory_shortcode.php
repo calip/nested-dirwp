@@ -294,7 +294,7 @@ EOT;
   		$replace_single_values = array($practicioner_name, $photo_url, $practicioner_bio);
 
   		$accepted_formatted_tags = array("[name_header]", "[photo]", "[location]", "[bio_paragraph]", "[profile_text]", "[profile_link]", "[certification]", "[website_link]");
-  		$replace_formatted_values = array("<h3>$practicioner_name</h3>", $photo_tag, $practicioner_location, "<p>$practicioner_bio</p>", $profile_text, $profile_link, $certification, $practicioner_website_link);
+  		$replace_formatted_values = array("<h3>$practicioner_name</h3>", $photo_tag, $practicioner_location, "<p>$practicioner_bio</p>", $practicioner_profile_text, $practicioner_profile_link, $practicioner_certification, $practicioner_website_link);
 
   		$current_practicioner_markup = str_replace($accepted_single_tags, $replace_single_values, $loop_markup);
   		$current_practicioner_markup = str_replace($accepted_formatted_tags, $replace_formatted_values, $current_practicioner_markup);

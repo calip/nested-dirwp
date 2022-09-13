@@ -4,15 +4,15 @@
         </div>
     </div>
     <div class="wicked-content">
-        <div class="wicked-title"><?php _e( 'Folders', 'wicked-folders' ); ?></div>
+        <div class="wicked-title"><?php _e( 'Locations', 'wicked-folders' ); ?></div>
         <div class="wicked-toolbar-container"></div>
         <div class="wicked-folder-details-container"></div>
         <div class="wicked-folder-pane-settings-container"></div>
         <?php if ( get_option( 'wicked_folders_show_folder_search', true ) ) : ?>
             <div class="wicked-folder-search-container">
                 <div class="wicked-folder-search">
-                    <label for="wicked-folder-search-input" class="screen-reader-text">Search folders</label>
-                    <input id="wicked-folder-search-input" name="wicked_folder_search" type="text" value="" placeholder="<?php _e( 'Search folders...', 'wicked-folders' ); ?>" />
+                    <label for="wicked-folder-search-input" class="screen-reader-text">Search Locations</label>
+                    <input id="wicked-folder-search-input" name="wicked_folder_search" type="text" value="" placeholder="<?php _e( 'Search Locations...', 'wicked-folders' ); ?>" />
                 </div>
             </div>
         <?php endif; ?>
@@ -23,7 +23,7 @@
                 <div>
                     <span class="dashicons dashicons-warning"></span>
                     <h1><?php _e( 'Something went wrong', 'wicked-folders' ); ?></h1>
-                    <p><?php _e( 'An error occurred while attempting to navigate to the folder.  Please refresh the page.', 'wicked-folders' ); ?></p>
+                    <p><?php _e( 'An error occurred while attempting to navigate to the Location.  Please refresh the page.', 'wicked-folders' ); ?></p>
                     <p>
                         <?php
                             echo sprintf(
@@ -51,11 +51,11 @@
             <p>{{ data.deleteFolderConfirmation }}</p>
         <# } else { #>
             <div class="wicked-folder-name">
-                <label for="wicked-folder-name" class="screen-reader-text"><?php _e( 'Folder name', 'wicked-folders' ); ?>:</label>
-                <input id="wicked-folder-name" type="text" name="wicked_folder_name" placeholder="<?php _e( 'Folder name', 'wicked-folders' ); ?>" value="{{ data.folderName }}" />
+                <label for="wicked-folder-name" class="screen-reader-text"><?php _e( 'Location name', 'wicked-folders' ); ?>:</label>
+                <input id="wicked-folder-name" type="text" name="wicked_folder_name" placeholder="<?php _e( 'Location name', 'wicked-folders' ); ?>" value="{{ data.folderName }}" />
             </div>
             <div class="wicked-folder-parent">
-                <label for="wicked-folder-parent" class="screen-reader-text"><?php _e( 'Parent folder', 'wicked-folders' ); ?>:</label>
+                <label for="wicked-folder-parent" class="screen-reader-text"><?php _e( 'Parent Location', 'wicked-folders' ); ?>:</label>
                 <div></div>
             </div>
         <# } #>
@@ -100,7 +100,7 @@
         <div class="wicked-field">
             <div class="wicked-field-label">
                 <?php _e( 'Organization mode:', 'wicked-folders' ); ?>
-                <span class="dashicons dashicons-editor-help" title="<?php _e( "Controls what happens when you drag and drop folders. Use 'Normal' to arrange your folder hierarchy by dragging and dropping folders into other folders. Use 'Sort' to change the order of the folders.", 'wicked-folders' ); ?>"></span>
+                <span class="dashicons dashicons-editor-help" title="<?php _e( "Controls what happens when you drag and drop Locations. Use 'Normal' to arrange your Location hierarchy by dragging and dropping Locations into other Locations. Use 'Sort' to change the order of the Locations.", 'wicked-folders' ); ?>"></span>
             </div>
             <div class="wicked-field-options">
                 <div>
@@ -120,7 +120,7 @@
         <div class="wicked-field">
             <div class="wicked-field-label">
                 <?php _e( 'Folder sort order:', 'wicked-folders' ); ?>
-                <span class="dashicons dashicons-editor-help" title="<?php _e( "Controls how your folders are sorted. Select 'Custom' to display the folders in the specific order you specify.", 'wicked-folders' ); ?>"></span>
+                <span class="dashicons dashicons-editor-help" title="<?php _e( "Controls how your Locations are sorted. Select 'Custom' to display the Locations in the specific order you specify.", 'wicked-folders' ); ?>"></span>
             </div>
             <div class="wicked-field-options">
                 <div>
@@ -151,7 +151,7 @@
             <# } #>
         </div>
         <# if ( data.enableCopy ) { #>
-            <?php _e( 'Hold SHIFT key to copy items to folder', 'wicked-folders' ); ?>
+            <?php _e( 'Hold SHIFT key to copy items to Location', 'wicked-folders' ); ?>
         <# } #>
     </div>
 </script>

@@ -8,7 +8,7 @@ class PracticionerDirectoryAdmin {
   static function add_admin_menu_items() {
     add_submenu_page('edit.php?post_type=practicioner', 'Practicioner Directory Settings', 'Settings', 'publish_posts', 'practicioner-directory-settings', array('PracticionerDirectoryAdmin', 'settings'));
     add_submenu_page('edit.php?post_type=practicioner', 'Practicioner Directory Help', 'Help', 'publish_posts', 'practicioner-directory-help', array('PracticionerDirectoryAdmin', 'help'));
-    add_submenu_page('edit.php?post_type=practicioner', 'Practicioner Directory Import', 'Import Old Practicioner', 'publish_posts', 'practicioner-directory-import', array('PracticionerDirectoryAdmin', 'import'));
+    // add_submenu_page('edit.php?post_type=practicioner', 'Practicioner Directory Import', 'Import Old Practicioner', 'publish_posts', 'practicioner-directory-import', array('PracticionerDirectoryAdmin', 'import'));
   }
 
   static function settings() {

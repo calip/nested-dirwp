@@ -164,33 +164,33 @@ final class Wicked_Folders_Admin {
 
 		wp_localize_script( 'wicked-folders-app', 'wickedFoldersL10n', array(
 			'allMedia' 					=> __( 'All media', 'wicked-folders' ),
-			'allFolders' 				=> __( 'All folders', 'wicked-folders' ),
+			'allFolders' 				=> __( 'All Locations', 'wicked-folders' ),
 			'delete' 					=> __( 'Delete', 'wicked-folders' ),
-			'folder' 					=> __( 'Folder', 'wicked-folders' ),
-			'addNewFolderLink' 			=> __( 'Add New Folder', 'wicked-folders' ),
-			'editFolderLink' 			=> __( 'Edit Folder', 'wicked-folders' ),
-			'cloneFolderLink' 			=> __( 'Clone Folder', 'wicked-folders' ),
-			'deleteFolderLink' 			=> __( 'Delete Folder', 'wicked-folders' ),
-			'folderSelectDefault' 		=> __( 'Parent Folder', 'wicked-folders' ),
+			'folder' 					=> __( 'Location', 'wicked-folders' ),
+			'addNewFolderLink' 			=> __( 'Add New Location', 'wicked-folders' ),
+			'editFolderLink' 			=> __( 'Edit Location', 'wicked-folders' ),
+			'cloneFolderLink' 			=> __( 'Clone Location', 'wicked-folders' ),
+			'deleteFolderLink' 			=> __( 'Delete Location', 'wicked-folders' ),
+			'folderSelectDefault' 		=> __( 'Parent Location', 'wicked-folders' ),
 			'expandAllFoldersLink' 		=> __( 'Expand All', 'wicked-folders' ),
 			'collapseAllFoldersLink' 	=> __( 'Collapse All', 'wicked-folders' ),
 			'save' 						=> __( 'Save', 'wicked-folders' ),
-			'deleteFolderConfirmation' 	=> __( "Are you sure you want to delete the selected folder? Sub folders will be assigned to the folder's parent. Items in the folder will not be deleted.", 'wicked-folders' ),
+			'deleteFolderConfirmation' 	=> __( "Are you sure you want to delete the selected Location? Sub Locations will be assigned to the Location's parent. Items in the Location will not be deleted.", 'wicked-folders' ),
 			'hideAssignedItems' 		=> __( 'Hide assigned items', 'wicked-folders' ),
-			'cloneFolderTooltip' 		=> __( 'Creates a copy of the currently selected folder containing the same items.', 'wicked-folders' ),
+			'cloneFolderTooltip' 		=> __( 'Creates a copy of the currently selected Location containing the same items.', 'wicked-folders' ),
 			'cloneFolderSuccess' 		=> __( 'Successfully cloned folder.', 'wicked-folders' ),
 			'cloneChildFolders' 		=> __( 'Clone child folders also', 'wicked-folders' ),
-			'cloneChildFoldersTooltip' 	=> __( 'If checked, descendant folders of the currently selected folder will also be cloned. Otherwise, only the currently selected folder will be cloned.', 'wicked-folders' ),
-			'hideAssignedItemsTooltip' 	=> __( "Check this box to hide items that have already been assigned to one or more folders.  This can be useful for determining which items you haven't already placed in a folder.", 'wicked-folders' ),
-			'folders' 					=> __( 'Folders', 'wicked-folders' ),
+			'cloneChildFoldersTooltip' 	=> __( 'If checked, descendant folders of the currently selected Location will also be cloned. Otherwise, only the currently selected Location will be cloned.', 'wicked-folders' ),
+			'hideAssignedItemsTooltip' 	=> __( "Check this box to hide items that have already been assigned to one or more Locations.  This can be useful for determining which items you haven't already placed in a Location.", 'wicked-folders' ),
+			'folders' 					=> __( 'Locations', 'wicked-folders' ),
 			'attachmentFolders' 		=> __( 'Attachment Folders', 'wicked-folders' ),
 			'toggleFolders'				=> __( 'Toggle folders', 'wicked-folders' ),
 			'cancel'					=> __( 'Cancel', 'wicked-folders' ),
-			'folderName'				=> __( 'Folder Name', 'wicked-folders' ),
-			'assignToFolder'			=> __( 'Assign to folder...', 'wicked-folders' ),
-			'errorFetchingChildFolders' => __( "An error occurred while fetching the folder's children.", 'wicked-folders' ),
-			'confirmUnassign' 			=> __( 'This will unassign the selected item(s) from all folders.  Are you sure you want to continue?', 'wicked-folders' ),
-			'navigationFailure' 		=> __( 'An error occurred while attempting to navigate to the folder.  Please see following console messages for more details.', 'wicked-folders' ),
+			'folderName'				=> __( 'Location Name', 'wicked-folders' ),
+			'assignToFolder'			=> __( 'Assign to Location...', 'wicked-folders' ),
+			'errorFetchingChildFolders' => __( "An error occurred while fetching the Location's children.", 'wicked-folders' ),
+			'confirmUnassign' 			=> __( 'This will unassign the selected item(s) from all Locations.  Are you sure you want to continue?', 'wicked-folders' ),
+			'navigationFailure' 		=> __( 'An error occurred while attempting to navigate to the Location.  Please see following console messages for more details.', 'wicked-folders' ),
 			'settings' 					=> __( 'Settings', 'wicked-folders' ),
 			'owner' 					=> __( 'Owner', 'wicked-folders' ),
 		) );
@@ -468,7 +468,7 @@ final class Wicked_Folders_Admin {
 				'menu_slug' 	=> Wicked_Folders::get_tax_name( $post_type->name ),
 				'page_title' 	=> sprintf( __( '%1$s Folders', 'wicked-folders' ), $post_type->labels->singular_name ),
 				//'menu_title' 	=> sprintf( __( '%1$s Folders', 'wicked-folders' ), $post_type->labels->singular_name ),
-				'menu_title' 	=> __( 'Folders', 'wicked-folders' ),
+				'menu_title' 	=> __( 'Locations', 'wicked-folders' ),
 				'callback' 		=> array( $this, 'folders_page' ),
 			);
 			if ( is_string( $post_type->show_in_menu ) ) {
@@ -478,8 +478,8 @@ final class Wicked_Folders_Admin {
 				$menu_item['parent_slug'] = 'edit.php';
 			}
 			if ( $post_type->_builtin ) {
-				$menu_item['page_title'] = __( 'Folders', 'wicked-folders' );
-				$menu_item['menu_title'] = __( 'Folders', 'wicked-folders' );
+				$menu_item['page_title'] = __( 'Locations', 'wicked-folders' );
+				$menu_item['menu_title'] = __( 'Locations', 'wicked-folders' );
 			}
 			if ( $enable_folder_pages ) $menu_items[] = $menu_item;
 
@@ -492,8 +492,8 @@ final class Wicked_Folders_Admin {
 					'parent_slug' 	=> 'edit.php?post_type=' . $post_type->name,
 					'capability' 	=> 'edit_posts',
 					'menu_slug' 	=> 'edit-tags.php?taxonomy=' . $taxonomy . '&post_type=' . $post_type->name,
-					'page_title' 	=> sprintf( __( 'Manage %1$s Folders', 'wicked-folders' ), $post_type->labels->singular_name ),
-					'menu_title' 	=> sprintf( __( 'Manage %1$s Folders', 'wicked-folders' ), $post_type->labels->singular_name ),
+					'page_title' 	=> sprintf( __( 'Manage %1$s Locations', 'wicked-folders' ), $post_type->labels->singular_name ),
+					'menu_title' 	=> sprintf( __( 'Manage %1$s Locations', 'wicked-folders' ), $post_type->labels->singular_name ),
 					'callback' 		=> null,
 					'taxonomy' 		=> $taxonomy,
 				);
@@ -504,8 +504,8 @@ final class Wicked_Folders_Admin {
 					$menu_item['parent_slug'] = $post_type->show_in_menu;
 				}
 				if ( $post_type->_builtin ) {
-					$menu_item['page_title'] = __( 'Manage Folders', 'wicked-folders' );
-					$menu_item['menu_title'] = __( 'Manage Folders', 'wicked-folders' );
+					$menu_item['page_title'] = __( 'Manage Locations', 'wicked-folders' );
+					$menu_item['menu_title'] = __( 'Manage Locations', 'wicked-folders' );
 				}
 				$menu_items[] = $menu_item;
 			}
@@ -519,8 +519,8 @@ final class Wicked_Folders_Admin {
 
 		// Add menu item for settings page
 		$parent_slug 	= 'options-general.php';
-		$page_title 	= __( 'Practitioners Folders Settings', 'wicked-folders' );
-		$menu_title 	= __( 'Practitioners Folders', 'wicked-folders' );
+		$page_title 	= __( 'Practitioners Locations Settings', 'wicked-folders' );
+		$menu_title 	= __( 'Practitioners Locations', 'wicked-folders' );
 		$capability 	= 'manage_options';
 		$menu_slug 		= 'wicked_folders_settings';
 		$callback 		= array( $this, 'settings_page' );
@@ -529,8 +529,8 @@ final class Wicked_Folders_Admin {
 
 		if ( $this->is_folder_pane_enabled_page() || ( isset( $_GET['page'] ) && 'menu_editor' == $_GET['page'] ) ) {
 			add_menu_page(
-				__( 'Toggle folders', 'wicked-folders' ),
-				__( 'Toggle folders', 'wicked-folders' ),
+				__( 'Toggle Locations', 'wicked-folders' ),
+				__( 'Toggle Locations', 'wicked-folders' ),
 				'read',
 				'wicked_folders_toggle',
 				'',

@@ -183,34 +183,35 @@ final class Wicked_Folders {
             $tax_name = Wicked_Folders::get_tax_name( $post_type->name );
 
             $labels = array(
-                'name'			=> sprintf( _x( '%1$s Folders', 'Taxonomy plural name', 'wicked-folders' ), $post_type->labels->singular_name ),
-                'singular_name' => sprintf( _x( '%1$s Folder', 'Taxonomy singular name', 'wicked-folders' ), $post_type->labels->singular_name ),
-                'all_items'		=> sprintf( __( 'All %1$s Folders', 'wicked-folders' ), $post_type->labels->singular_name ),
-                'edit_item'		=> __( 'Edit Folder', 'wicked-folders' ),
-                'update_item'	=> __( 'Update Folder', 'wicked-folders' ),
-                'add_new_item'	=> __( 'Add New Folder', 'wicked-folders' ),
-                'new_item_name' => __( 'Add Folder Name', 'wicked-folders' ),
-                'menu_name'     => __( 'Folders', 'wicked-folders' ),
-                'search_items'  => __( 'Search Folders', 'wicked-folders' ),
-				'parent_item' 	=> __( 'Parent Folder', 'wicked-folders' ),
+                'name'			=> sprintf( _x( '%1$s Locations', 'Taxonomy plural name', 'wicked-folders' ), $post_type->labels->singular_name ),
+                'singular_name' => sprintf( _x( '%1$s Location', 'Taxonomy singular name', 'wicked-folders' ), $post_type->labels->singular_name ),
+                'all_items'		=> sprintf( __( 'All %1$s Locations', 'wicked-folders' ), $post_type->labels->singular_name ),
+                'edit_item'		=> __( 'Edit Location', 'wicked-folders' ),
+                'update_item'	=> __( 'Update Location', 'wicked-folders' ),
+                'add_new_item'	=> __( 'Add New Location', 'wicked-folders' ),
+                'new_item_name' => __( 'Add Location Name', 'wicked-folders' ),
+                'menu_name'     => __( 'Locations', 'wicked-folders' ),
+                'search_items'  => __( 'Search Locations', 'wicked-folders' ),
+				'parent_item' 	=> __( 'Parent Location', 'wicked-folders' ),
             );
 
             $args = array(
-                'label'				=> _x( 'Folders', 'Taxonomy plural name', 'wicked-folders' ),
+                'label'				=> _x( 'Locations', 'Taxonomy plural name', 'wicked-folders' ),
                 'labels'			=> $labels,
                 'show_tagcloud' 	=> false,
                 'hierarchical'		=> true,
-                'public'        	=> false,
+                'public'        	=> true,
                 'show_ui'       	=> true,
                 'show_in_menu'  	=> false,
 				'show_in_rest' 		=> true,
                 'show_admin_column' => true,
-                'rewrite'			=> false,
+								'rewrite' => array( 'slug' => 'practicioner', 'with_front' => false, 'hierarchical' => true ),
+                // 'rewrite'			=> false,
             );
 
 			if ( 'attachment' == $post_type->name && get_option( 'wicked_folders_enable_taxonomy_pages', false ) ) {
 				$args['show_in_menu'] 	= true;
-				$args['labels']['menu_name'] = __( 'Manage Folders', 'wicked-folders' );
+				$args['labels']['menu_name'] = __( 'Manage Locations', 'wicked-folders' );
 			}
 
 			register_taxonomy( $tax_name, $post_type->name, $args );
@@ -505,7 +506,7 @@ final class Wicked_Folders {
         $folders[] = new Wicked_Folders_Folder( array(
 			'id' 				=> 0,
 			//'name' => 		sprintf( __( 'All %1$s', 'wicked-folders' ), $post_type_object->label ),
-			'name' 				=> __( 'All Folders', 'wicked-folders' ),
+			'name' 				=> __( 'All Locations', 'wicked-folders' ),
 			'parent' 			=> 'root',
 			'post_type' 		=> $post_type,
 			'taxonomy' 			=> $taxonomy,
@@ -564,7 +565,7 @@ final class Wicked_Folders {
 			$dynamic_folders = array(
 				new Wicked_Folders_Folder( array(
 					'id' 			=> 'dynamic_root',
-					'name' 			=> __( 'Dynamic Folders', 'wicked-folders' ),
+					'name' 			=> __( 'Dynamic Locations', 'wicked-folders' ),
 					'parent' 		=> 'root',
 					'post_type' 	=> $post_type,
 					'taxonomy' 		=> $taxonomy,

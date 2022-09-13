@@ -37,7 +37,7 @@ class PracticionerDirectoryShortcode {
   	}
 
     $query_args = array(
-      'post_type' => 'practicioner-directory-master',
+      'post_type' => 'practicioner',
       'posts_per_page' => -1
     );
 
@@ -51,7 +51,7 @@ class PracticionerDirectoryShortcode {
   	if((isset($cat) && $cat != '') && (!isset($id) || $id == '')){
   		$query_args['tax_query'] = array(
         array(
-          'taxonomy' => 'practicioner_category',
+          'taxonomy' => 'wf_practicioner_folders',
           'terms' => array($cat)
         )
       );
@@ -66,22 +66,35 @@ class PracticionerDirectoryShortcode {
 
     $practicioner_query = new WP_Query($query_args);
 
-    switch($template){
-      case 'list':
-        $output = PracticionerDirectoryShortcode::html_for_list_template($practicioner_query);
-        break;
-      case 'grid':
-        $output = PracticionerDirectoryShortcode::html_for_grid_template($practicioner_query);
-        break;
-      default:
-        $output = PracticionerDirectoryShortcode::html_for_custom_template($template, $practicioner_query);
-        break;
-
+    $list_terms = get_terms('wf_practicioner_folders', array( 'child_of' => $cat ) );  
+    if($list_terms) {
+      echo "asdasdasdasd";
+      $output = PracticionerDirectoryShortcode::html_for_child_list_template($list_terms);
+    } else {
+      switch($template){
+        case 'list':
+          $output = PracticionerDirectoryShortcode::html_for_list_template($practicioner_query);
+          break;
+        case 'grid':
+          $output = PracticionerDirectoryShortcode::html_for_grid_template($practicioner_query);
+          break;
+        default:
+          $output = PracticionerDirectoryShortcode::html_for_custom_template($template, $practicioner_query);
+          break;
+      }
     }
 
     wp_reset_query();
 
   	return $output;
+  }
+
+  static function html_for_child_list_template($wp_query) {
+    $output = '';
+    foreach ( $wp_query as $list ) {
+      $output .= '<li><a href="' . get_term_link( $list ) . '">' . $list->name . '</a></li>';
+    }
+    return $output;
   }
 
   static function html_for_list_template($wp_query) {
@@ -106,7 +119,7 @@ class PracticionerDirectoryShortcode {
           line-height: 1em;
           margin-bottom: 4px;
         }
-        .single-practicioner .position {
+        .single-practicioner .location {
           font-size: .9em;
           line-height: .9em;
           margin-bottom: 10px;
@@ -134,7 +147,7 @@ EOT;
       $wp_query->the_post();
 
       $name = get_the_title();
-      $position = get_post_meta(get_the_ID(), 'position', true);
+      $location = get_post_meta(get_the_ID(), 'location', true);
       $bio = get_the_content();
 
       if(has_post_thumbnail()) {
@@ -145,17 +158,22 @@ EOT;
         $photo_html = '';
       }
 
-      if(get_post_meta(get_the_ID(), 'email', true) != '') {
-        $email = get_post_meta(get_the_ID(), 'email', true);
-        $email_html = '<div class="email">Email: <a href="mailto:' . $email . '">' . $email . '</a></div>';
+      if(get_post_meta(get_the_ID(), 'profile_text', true) != '') {
+        $profile_text_html = get_post_meta(get_the_ID(), 'profile_text', true);
       } else {
-        $email_html = '';
+        $profile_text_html = '';
       }
 
-      if(get_post_meta(get_the_ID(), 'phone', true) != '') {
-        $phone_html = '<div class="phone">Phone: ' . get_post_meta(get_the_ID(), 'phone', true) . '</div>';
+      if(get_post_meta(get_the_ID(), 'profile_link', true) != '') {
+        $profile_link_html = get_post_meta(get_the_ID(), 'profile_link', true);
       } else {
-        $phone_html = '';
+        $profile_link_html = '';
+      }
+
+      if(get_post_meta(get_the_ID(), 'certification', true) != '') {
+        $certification_html = get_post_meta(get_the_ID(), 'certification', true);
+      } else {
+        $certification_html = '';
       }
 
       if(get_post_meta(get_the_ID(), 'website', true) != '') {
@@ -169,11 +187,12 @@ EOT;
         <div class="single-practicioner">
           $photo_html
           <div class="name">$name</div>
-          <div class="position">$position</div>
+          <div class="location">$location</div>
           <div class="bio">$bio</div>
-          $email_html
-          $phone_html
           $website_html
+          $profile_text_html
+          $profile_link_html
+          $certification_html
           <div class="clearfix"></div>
         </div>
 EOT;
@@ -218,7 +237,7 @@ EOT;
       $wp_query->the_post();
 
       $name = get_the_title();
-      $position = get_post_meta(get_the_ID(), 'position', true);
+      $location = get_post_meta(get_the_ID(), 'location', true);
 
       if(has_post_thumbnail()) {
         $attachment_array = wp_get_attachment_image_src(get_post_thumbnail_id());
@@ -232,7 +251,7 @@ EOT;
         <div class="single-practicioner">
           $photo_html
           <div class="name">$name</div>
-          <div class="position">$position</div>
+          <div class="location">$location</div>
         </div>
 EOT;
     }
@@ -273,31 +292,22 @@ EOT;
         $photo_tag = "";
       }
 
-      $practicioner_email = get_post_meta(get_the_ID(), 'email', true);
-      $practicioner_email_link = $practicioner_email != '' ? "<a href=\"mailto:$practicioner_email\">Email $practicioner_name</a>" : "";
-      $practicioner_phone_number = get_post_meta(get_the_ID(), 'phone_number', true);
+      $practicioner_location = get_post_meta(get_the_ID(), 'location', true);
+      $practicioner_profile_text = get_post_meta(get_the_ID(), 'profile_text', true);
+      $practicioner_profile = get_post_meta(get_the_ID(), 'profile_link', true);
+      $practicioner_profile_link = $practicioner_profile != '' ? "<a href=\"$practicioner_profile\" target=\"_blank\">View profile</a>" : "";
+      $practicioner_certification = get_post_meta(get_the_ID(), 'certification', true);
+      // $practicioner_email_link = $practicioner_email != '' ? $practicioner_email : "";
+      // $practicioner_phone_number = get_post_meta(get_the_ID(), 'phone_number', true);
       $practicioner_bio = get_the_content();
       $practicioner_website = get_post_meta(get_the_ID(), 'website', true);
       $practicioner_website_link = $practicioner_website != '' ? "<a href=\"$practicioner_website\" target=\"_blank\">View website</a>" : "";
 
-      $practicioner_categories = wp_get_post_terms(get_the_ID(), 'practicioner_category');
-      $all_practicioner_categories = "";
+      $accepted_single_tags = array("[name]", "[photo_url]", "[bio]");
+  		$replace_single_values = array($practicioner_name, $photo_url, $practicioner_bio);
 
-      if (count($practicioner_categories) > 0) {
-        $practicioner_category = $practicioner_categories[0]->name;
-        foreach($practicioner_categories as $category) {
-          $all_practicioner_categories .= $category->name . ", ";
-        }
-        $all_practicioner_categories = substr($all_practicioner_categories, 0, strlen($all_practicioner_categories) - 2);
-      } else {
-        $practicioner_category = "";
-      }
-
-      $accepted_single_tags = array("[name]", "[photo_url]", "[bio]", "[category]", "[category all=true]");
-  		$replace_single_values = array($practicioner_name, $photo_url, $practicioner_bio, $practicioner_category, $all_practicioner_categories);
-
-  		$accepted_formatted_tags = array("[name_header]", "[photo]", "[email_link]", "[bio_paragraph]", "[website_link]");
-  		$replace_formatted_values = array("<h3>$practicioner_name</h3>", $photo_tag, $practicioner_email_link, "<p>$practicioner_bio</p>", $practicioner_website_link);
+  		$accepted_formatted_tags = array("[name_header]", "[photo]", "[location]", "[bio_paragraph]", "[profile_text]", "[profile_link]", "[certification]", "[website_link]");
+  		$replace_formatted_values = array("<h3>$practicioner_name</h3>", $photo_tag, $practicioner_location, "<p>$practicioner_bio</p>", $practicioner_profile_text, $practicioner_profile_link, $practicioner_certification, $practicioner_website_link);
 
   		$current_practicioner_markup = str_replace($accepted_single_tags, $replace_single_values, $loop_markup);
   		$current_practicioner_markup = str_replace($accepted_formatted_tags, $replace_formatted_values, $current_practicioner_markup);

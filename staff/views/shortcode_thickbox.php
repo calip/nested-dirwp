@@ -13,12 +13,34 @@
 </style>
 
 <div id="practicioner-categories-wrapper">
-  <label for="practicioner-category">Practicioner Category</label>
+  <label for="practicioner-category">Practicioner Folders</label>
   <select name="practicioner-category">
-    <option value=''>-- Select Category --</option>
-    <?php foreach(get_terms('practicioner_category') as $cat): ?>
+    <option value=''>-- Select Folders --</option>
+    <?php
+    $taxonomy = "wf_practicioner_folders";
+    $terms = get_terms($taxonomy, array(
+            "orderby"    => "count",
+            "hide_empty" => false
+        )
+    );
+    $hierarchy = _get_term_hierarchy($taxonomy);
+    foreach($terms as $term) {
+      if($term->parent) {
+          continue;
+      }
+      echo '<option value="' . $term->term_id . '">' . $term->name . '</option>';
+      if($hierarchy[$term->term_id]) {
+          foreach($hierarchy[$term->term_id] as $child) {
+              $child = get_term($child, "wf_practicioner_folders");
+              echo '<option value="' . $term->term_id . '"> - ' . $child->name . '</option>';
+          }
+      }
+    }
+    ?>
+    <!-- <?php foreach(get_terms('wf_practicioner_folders') as $cat): ?>
+
       <option value="<?php echo $cat->term_id; ?>"><?php echo $cat->name; ?></option>
-    <?php endforeach; ?>
+    <?php endforeach; ?> -->
   </select>
 </div>
 
@@ -31,7 +53,7 @@
   </select>
 </div>
 
-<div id="practicioner-template-wrapper">
+<!-- <div id="practicioner-template-wrapper">
   <label for="practicioner-template">Practicioner Template</label>
   <select name="practicioner-template">
     <option value=''>-- Use Default --</option>
@@ -41,6 +63,6 @@
       <option value="<?php echo $template['slug'] ?>">Custom Template <?php echo $template['index']; ?></option>
     <?php endforeach; ?>
   </select>
-</div>
+</div> -->
 
 <a href="javascript:PracticionerDirectory.formatShortCode();" class="button button-primary button-large">Insert Shortcode</a>

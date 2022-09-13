@@ -8,11 +8,8 @@ class PracticionerDirectory {
 
   static function register_post_types() {
     add_action('init', array('PracticionerDirectory', 'create_post_types'));
-    add_action('init', array('PracticionerDirectory', 'create_practicioner_taxonomies'));
     add_filter("manage_edit-practicioner_columns", array('PracticionerDirectory', 'set_practicioner_admin_columns'));
     add_filter("manage_practicioner_posts_custom_column", array('PracticionerDirectory', 'custom_practicioner_admin_columns'), 10, 3);
-    add_filter("manage_edit-practicioner_category_columns", array('PracticionerDirectory', 'set_practicioner_category_columns'));
-    add_filter("manage_practicioner_category_custom_column", array('PracticionerDirectory', 'custom_practicioner_category_columns'), 10, 3);
     add_filter('enter_title_here', array('PracticionerDirectory', 'practicioner_title_text'));
     add_filter('admin_head', array('PracticionerDirectory', 'remove_media_buttons'));
     add_action('add_meta_boxes_practicioner', array('PracticionerDirectory', 'add_practicioner_custom_meta_boxes'));
@@ -22,7 +19,11 @@ class PracticionerDirectory {
 
     add_action('init', array('PracticionerDirectory', 'init_tinymce_button'));
     add_action('wp_ajax_get_my_form', array('PracticionerDirectory', 'thickbox_ajax_form'));
+    add_filter('post_type_link', array('PracticionerDirectory', 'wpa_show_permalinks'), 1, 2 );
+    // hook it up to 11 so that it overrides the original register_taxonomy function
+    // add_action( 'init', array('PracticionerDirectory', 'wpse_modify_taxonomy'), 11 );
   }
+
 
   static function create_post_types() {
     register_post_type( 'practicioner',
@@ -37,33 +38,21 @@ class PracticionerDirectory {
         ),
         'public' => true,
         'menu_icon' => 'dashicons-groups',
-        'taxonomies' => array('practicioner_category')
+        'taxonomies' => array('wf_practicioner_folders'),
+        'rewrite' => array( 'slug' => 'practicioner/%wf_practicioner_folders%', 'with_front' => true ),
+        'has_archive' => 'practicioner',
       )
     );
   }
 
-  static function create_practicioner_taxonomies() {
-    register_taxonomy('practicioner_category', 'practicioner', array(
-  		'hierarchical' => true,
-  		'labels' => array(
-  			'name' => _x( 'Practicioner Category', 'taxonomy general name' ),
-  			'singular_name' => _x( 'practicioner-category', 'taxonomy singular name' ),
-  			'search_items' =>  __( 'Search Practicioner Categories' ),
-  			'all_items' => __( 'All Practicioner Categories' ),
-  			'parent_item' => __( 'Parent Practicioner Category' ),
-  			'parent_item_colon' => __( 'Parent Practicioner Category:' ),
-  			'edit_item' => __( 'Edit Practicioner Category' ),
-  			'update_item' => __( 'Update Practicioner Category' ),
-  			'add_new_item' => __( 'Add New Practicioner Category' ),
-  			'new_item_name' => __( 'New Practicioner Category Name' ),
-  			'menu_name' => __( 'Practicioner Categories' ),
-  		),
-  		'rewrite' => array(
-  			'slug' => 'practicioner-categories',
-  			'with_front' => false,
-  			'hierarchical' => true
-  		),
-  	));
+  static function wpa_show_permalinks( $post_link, $post ){
+    if ( is_object( $post ) && $post->post_type == 'practicioner' ){
+        $terms = wp_get_object_terms( $post->ID, 'wf_practicioner_folders' );
+        if( $terms ){
+            return str_replace( '%wf_practicioner_folders%' , $terms[0]->slug , $post_link );
+        }
+    }
+    return $post_link;
   }
 
   static function set_practicioner_admin_columns() {
@@ -94,30 +83,6 @@ class PracticionerDirectory {
         break;
     }
     echo $out;
-  }
-
-  static function set_practicioner_category_columns() {
-    $new_columns = array(
-  	  'cb' => '<input type="checkbox" />',
-  	  'name' => __('Name'),
-      'id' => __('ID'),
-  		'description' => __('Description'),
-      'slug' => __('Slug'),
-      'posts' => __('Posts')
-  	);
-  	return $new_columns;
-  }
-
-  static function custom_practicioner_category_columns($out, $column_name, $theme_id) {
-      switch ($column_name) {
-          case 'id':
-              $out .= $theme_id;
-              break;
-
-          default:
-              break;
-      }
-      return $out;
   }
 
   static function enqueue_fontawesome() {
@@ -170,7 +135,19 @@ class PracticionerDirectory {
         <?php if($field['type'] == 'text'): ?>
           <input type="text" name="practicioner_meta[<?php echo $field['slug'] ?>]" value="<?php echo get_post_meta($post->ID, $field['slug'], true); ?>" />
         <?php elseif($field['type'] == 'textarea'): ?>
-          <textarea cols=40 rows=5 name="practicioner_meta[<?php echo $field['slug'] ?>]"><?php echo get_post_meta($post->ID, $field['slug'], true); ?></textarea>
+          <?php
+          $content = get_post_meta($post->ID, $field['slug'], true);
+          $custom_editor_id = "certificationeditor";
+          $custom_editor_name = "practicioner_meta[". $field['slug'] ."]";
+          $args = array(
+              'media_buttons' => false,
+              'textarea_name' => $custom_editor_name,
+              'textarea_rows' => get_option('default_post_edit_rows', 10),
+              'quicktags' => false
+            );
+          wp_editor( $content, $custom_editor_id, $args );
+          ?>
+          <!-- <textarea cols=40 rows=5 name="practicioner_meta[<?php echo $field['slug'] ?>]"><?php echo get_post_meta($post->ID, $field['slug'], true); ?></textarea> -->
         <?php endif; ?>
       </p>
     <?php endforeach; ?>
@@ -199,25 +176,30 @@ class PracticionerDirectory {
     if($current_meta_fields == NULL || $current_meta_fields = '') {
       $default_meta_fields = array(
         array(
-          'name' => 'Position',
+          'name' => 'Location',
           'type' => 'text',
-          'slug' => 'position'
-        ),
-        array(
-          'name' => 'Email',
-          'type' => 'text',
-          'slug' => 'email'
-        ),
-        array(
-          'name' => 'Phone Number',
-          'type' => 'text',
-          'slug' => 'phone_number'
+          'slug' => 'location'
         ),
         array(
           'name' => 'Website',
           'type' => 'text',
           'slug' => 'website'
-        )
+        ),
+        array(
+          'name' => 'Profile Text',
+          'type' => 'text',
+          'slug' => 'profile_text'
+        ),
+        array(
+          'name' => 'Profile Link',
+          'type' => 'text',
+          'slug' => 'profile_link'
+        ),
+        array(
+          'name' => 'Certification Info',
+          'type' => 'textarea',
+          'slug' => 'certification'
+        ),
       );
       update_option('practicioner_meta_fields', $default_meta_fields);
     }
@@ -350,120 +332,6 @@ EOT;
   		return $wpdb->get_results("SELECT * FROM " . PRACTICIONER_DIRECTORY_TABLE);
 
   	}
-  }
-
-  static function import_old_practicioner() {
-    global $wpdb;
-
-    $old_categories_table = $wpdb->prefix . 'practicioner_directory_categories';
-    $old_practicioner_directory_table = $wpdb->prefix . 'practicioner_directory';
-    $old_templates_table = PRACTICIONER_TEMPLATES;
-
-    #
-    # Copy old categories over first
-    #
-
-    $old_practicioner_categories_sql = "
-      SELECT
-        cat_id, name
-
-      FROM
-        $old_categories_table
-    ";
-
-    $old_practicioner_categories = $wpdb->get_results($old_practicioner_categories_sql);
-
-    foreach($old_practicioner_categories as $category) {
-      wp_insert_term($category->name, 'practicioner_category');
-    }
-
-    #
-    # Now copy old practicioner members over
-    #
-
-    $old_practicioner = PracticionerDirectory::get_old_practicioner();
-    foreach ($old_practicioner as $practicioner) {
-      $new_practicioner_array = array(
-        'post_title'  => $practicioner->name,
-        'post_content'  => $practicioner->bio,
-        'post_type' => 'practicioner',
-        'post_status' => 'publish'
-      );
-      $new_practicioner_post_id = wp_insert_post($new_practicioner_array);
-      update_post_meta($new_practicioner_post_id, 'position', $practicioner->position);
-      update_post_meta($new_practicioner_post_id, 'email', $practicioner->email_address);
-      update_post_meta($new_practicioner_post_id, 'phone_number', $practicioner->phone_number);
-
-      if (isset($practicioner->category)) {
-        $old_category_sql = "
-          SELECT
-            cat_id, name
-
-          FROM
-            $old_categories_table
-
-          WHERE
-            cat_id=$practicioner->category
-        ";
-        $old_category = $wpdb->get_results($old_category_sql);
-        $new_category = get_term_by('name', $old_category[0]->name, 'practicioner_category');
-        wp_set_post_terms($new_practicioner_post_id, array($new_category->term_id), 'practicioner_category');
-      }
-
-      if (isset($practicioner->photo) && $practicioner->photo != '') {
-        $upload_dir = wp_upload_dir();
-        $upload_dir = $upload_dir['basedir'];
-        $image_path = $upload_dir . '/practicioner-photos/' . $practicioner->photo;
-        $filetype = wp_check_filetype($image_path);
-        $attachment_id = wp_insert_attachment(array(
-          'post_title' => $practicioner->photo,
-          'post_content' => '',
-          'post_status' => 'publish',
-          'post_mime_type' => $filetype['type']
-        ), $image_path, $new_practicioner_post_id);
-        set_post_thumbnail($new_practicioner_post_id, $attachment_id);
-      }
-    }
-
-    #
-    # Now copy templates over
-    #
-
-    $old_html_template_sql = "
-      SELECT
-        template_code
-
-      FROM
-        $old_templates_table
-
-      WHERE
-        template_name='practicioner_index_html'
-    ";
-    $old_html_template_results = $wpdb->get_results($old_html_template_sql);
-    update_option('practicioner_directory_html_template', $old_html_template_results[0]->template_code);
-
-    $old_css_template_sql = "
-      SELECT
-        template_code
-
-      FROM
-        $old_templates_table
-
-      WHERE
-        template_name='practicioner_index_css'
-    ";
-    $old_css_template_results = $wpdb->get_results($old_css_template_sql);
-    update_option('practicioner_directory_css_template', $old_css_template_results[0]->template_code);
-
-    #
-    # Now delete the old tables
-    #
-
-    $drop_tables_sql = "
-      DROP TABLE
-        $old_categories_table, $old_practicioner_directory_table, $old_templates_table
-    ";
-    $wpdb->get_results($drop_tables_sql);
   }
 
   static function init_tinymce_button() {

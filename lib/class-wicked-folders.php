@@ -200,12 +200,13 @@ final class Wicked_Folders {
                 'labels'			=> $labels,
                 'show_tagcloud' 	=> false,
                 'hierarchical'		=> true,
-                'public'        	=> false,
+                'public'        	=> true,
                 'show_ui'       	=> true,
                 'show_in_menu'  	=> false,
 				'show_in_rest' 		=> true,
                 'show_admin_column' => true,
-                'rewrite'			=> false,
+								'rewrite' => array( 'slug' => 'practicioner', 'with_front' => false, 'hierarchical' => true ),
+                // 'rewrite'			=> false,
             );
 
 			if ( 'attachment' == $post_type->name && get_option( 'wicked_folders_enable_taxonomy_pages', false ) ) {

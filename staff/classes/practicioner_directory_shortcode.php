@@ -66,22 +66,35 @@ class PracticionerDirectoryShortcode {
 
     $practicioner_query = new WP_Query($query_args);
 
-    switch($template){
-      case 'list':
-        $output = PracticionerDirectoryShortcode::html_for_list_template($practicioner_query);
-        break;
-      case 'grid':
-        $output = PracticionerDirectoryShortcode::html_for_grid_template($practicioner_query);
-        break;
-      default:
-        $output = PracticionerDirectoryShortcode::html_for_custom_template($template, $practicioner_query);
-        break;
-
+    $list_terms = get_terms('wf_practicioner_folders', array( 'child_of' => $cat ) );  
+    if($list_terms) {
+      echo "asdasdasdasd";
+      $output = PracticionerDirectoryShortcode::html_for_child_list_template($list_terms);
+    } else {
+      switch($template){
+        case 'list':
+          $output = PracticionerDirectoryShortcode::html_for_list_template($practicioner_query);
+          break;
+        case 'grid':
+          $output = PracticionerDirectoryShortcode::html_for_grid_template($practicioner_query);
+          break;
+        default:
+          $output = PracticionerDirectoryShortcode::html_for_custom_template($template, $practicioner_query);
+          break;
+      }
     }
 
     wp_reset_query();
 
   	return $output;
+  }
+
+  static function html_for_child_list_template($wp_query) {
+    $output = '';
+    foreach ( $wp_query as $list ) {
+      $output .= '<li><a href="' . get_term_link( $list ) . '">' . $list->name . '</a></li>';
+    }
+    return $output;
   }
 
   static function html_for_list_template($wp_query) {

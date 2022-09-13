@@ -19,7 +19,11 @@ class PracticionerDirectory {
 
     add_action('init', array('PracticionerDirectory', 'init_tinymce_button'));
     add_action('wp_ajax_get_my_form', array('PracticionerDirectory', 'thickbox_ajax_form'));
+    add_filter('post_type_link', array('PracticionerDirectory', 'wpa_show_permalinks'), 1, 2 );
+    // hook it up to 11 so that it overrides the original register_taxonomy function
+    // add_action( 'init', array('PracticionerDirectory', 'wpse_modify_taxonomy'), 11 );
   }
+
 
   static function create_post_types() {
     register_post_type( 'practicioner',
@@ -34,9 +38,21 @@ class PracticionerDirectory {
         ),
         'public' => true,
         'menu_icon' => 'dashicons-groups',
-        'taxonomies' => array('wf_practicioner_folders')
+        'taxonomies' => array('wf_practicioner_folders'),
+        'rewrite' => array( 'slug' => 'practicioner/%wf_practicioner_folders%', 'with_front' => true ),
+        'has_archive' => 'practicioner',
       )
     );
+  }
+
+  static function wpa_show_permalinks( $post_link, $post ){
+    if ( is_object( $post ) && $post->post_type == 'practicioner' ){
+        $terms = wp_get_object_terms( $post->ID, 'wf_practicioner_folders' );
+        if( $terms ){
+            return str_replace( '%wf_practicioner_folders%' , $terms[0]->slug , $post_link );
+        }
+    }
+    return $post_link;
   }
 
   static function set_practicioner_admin_columns() {

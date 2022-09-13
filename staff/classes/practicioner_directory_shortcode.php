@@ -51,7 +51,7 @@ class PracticionerDirectoryShortcode {
   	if((isset($cat) && $cat != '') && (!isset($id) || $id == '')){
   		$query_args['tax_query'] = array(
         array(
-          'taxonomy' => 'practicioner_category',
+          'taxonomy' => 'wf_practicioner_folders',
           'terms' => array($cat)
         )
       );

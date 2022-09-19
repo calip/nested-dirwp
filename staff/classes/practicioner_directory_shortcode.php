@@ -64,11 +64,27 @@ class PracticionerDirectoryShortcode {
       $query_args['order'] = $order;
     }
 
-    $practicioner_query = new WP_Query($query_args);
+    $query_param = get_queried_object();
+    $query_slug = 0;
+    if($query_param && $query_param->name !== 'practicioner' ) {
+      $param_slug = get_term_by('slug', $query_param->name, 'wf_practicioner_folders');
+      $query_slug = $param_slug->term_id;
+    }
 
-    $list_terms = get_terms('wf_practicioner_folders', array( 'parent' => 0 ) );  
-    if($list_terms) {
-      $output = PracticionerDirectoryShortcode::html_for_child_list_template($list_terms);
+    if($query_slug) {
+      $query_args['tax_query'] = array(
+        array(
+          'taxonomy' => 'wf_practicioner_folders',
+          'terms' => array($param_slug->term_id)
+        )
+      );
+    }
+
+    $practicioner_query = new WP_Query($query_args);
+    
+    $list_terms = get_terms('wf_practicioner_folders', array( 'parent' => $query_slug ) );  
+    if($query_param && $list_terms) {
+      $output = PracticionerDirectoryShortcode::html_for_child_list_template($list_terms, $practicioner_query);
     } else {
       switch($template){
         case 'list':
@@ -88,10 +104,10 @@ class PracticionerDirectoryShortcode {
   	return $output;
   }
 
-  static function html_for_child_list_template($wp_query) {
+  static function html_for_child_list_template($wp_query, $query) {
     $output = '';
     foreach ( $wp_query as $list ) {
-      $output .= '<li><a href="' . get_term_link( $list ) . '">' . $list->name . '</a></li>';
+      $output .= '<li><a href="'.home_url().'/'.$query->query['post_type'].'/'.$list->slug.'">' . $list->name . '</a></li>';
     }
     return $output;
   }
@@ -144,7 +160,7 @@ class PracticionerDirectoryShortcode {
 EOT;
     while($wp_query->have_posts()) {
       $wp_query->the_post();
-
+      
       $name = get_the_title();
       $location = get_post_meta(get_the_ID(), 'location', true);
       $bio = get_the_content();

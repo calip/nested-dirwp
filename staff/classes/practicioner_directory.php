@@ -20,6 +20,8 @@ class PracticionerDirectory {
     add_action('init', array('PracticionerDirectory', 'init_tinymce_button'));
     add_action('wp_ajax_get_my_form', array('PracticionerDirectory', 'thickbox_ajax_form'));
     add_filter('post_type_link', array('PracticionerDirectory', 'wpa_show_permalinks'), 1, 2 );
+    // add_filter( 'query_vars', array('PracticionerDirectory', 'wp_query_vars' ));
+    // add_action( 'init', array('PracticionerDirectory','init_custom_rewrite' ));
     // hook it up to 11 so that it overrides the original register_taxonomy function
     // add_action( 'init', array('PracticionerDirectory', 'wpse_modify_taxonomy'), 11 );
   }

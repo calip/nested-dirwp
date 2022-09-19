@@ -66,9 +66,8 @@ class PracticionerDirectoryShortcode {
 
     $practicioner_query = new WP_Query($query_args);
 
-    $list_terms = get_terms('wf_practicioner_folders', array( 'child_of' => $cat ) );  
+    $list_terms = get_terms('wf_practicioner_folders', array( 'parent' => 0 ) );  
     if($list_terms) {
-      echo "asdasdasdasd";
       $output = PracticionerDirectoryShortcode::html_for_child_list_template($list_terms);
     } else {
       switch($template){

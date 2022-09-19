@@ -206,6 +206,7 @@ final class Wicked_Folders {
 				'show_in_rest' 		=> true,
                 'show_admin_column' => true,
 								'rewrite' => array( 'slug' => 'practicioner', 'with_front' => false, 'hierarchical' => true ),
+								'has_archive' => true
                 // 'rewrite'			=> false,
             );
 

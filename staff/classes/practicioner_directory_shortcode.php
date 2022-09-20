@@ -9,10 +9,11 @@ class PracticionerDirectoryShortcode {
     extract(shortcode_atts(array(
   		'id' => '',
   		'cat' => '',
+      'type' => '', 
   		'orderby' => '',
   		'order' => ''
   	), $params));
-
+    
   	$output = '';
 
     $practicioner_settings = PracticionerSettings::sharedInstance();
@@ -23,7 +24,7 @@ class PracticionerDirectoryShortcode {
     }
 
   	// get all practicioner
-  	$param = "id=$id&cat=$cat&orderby=$orderby&order=$order";
+  	$param = "id=$id&cat=$cat&type=$type&orderby=$orderby&order=$order";
   	return PracticionerDirectoryShortcode::show_practicioner_directory($param, $template);
   }
 
@@ -31,6 +32,7 @@ class PracticionerDirectoryShortcode {
   	parse_str($param);
   	global $wpdb;
 
+    
   	// make sure we aren't calling both id and cat at the same time
   	if(isset($id) && $id != '' && isset($cat) && $cat != ''){
   		return "<strong>ERROR: You cannot set both a single ID and a category ID for your Practicioner Directory</strong>";
@@ -80,28 +82,127 @@ class PracticionerDirectoryShortcode {
       );
     }
 
-    $practicioner_query = new WP_Query($query_args);
-    
-    $list_terms = get_terms('wf_practicioner_folders', array( 'parent' => $query_slug ) );  
-    if($query_param && $list_terms) {
-      $output = PracticionerDirectoryShortcode::html_for_child_list_template($list_terms, $practicioner_query);
-    } else {
-      switch($template){
-        case 'list':
-          $output = PracticionerDirectoryShortcode::html_for_list_template($practicioner_query);
-          break;
-        case 'grid':
-          $output = PracticionerDirectoryShortcode::html_for_grid_template($practicioner_query);
-          break;
-        default:
-          $output = PracticionerDirectoryShortcode::html_for_custom_template($template, $practicioner_query);
-          break;
+    if(isset($type) && $type === 'single') {
+      $output = PracticionerDirectoryShortcode::html_for_single_list_template($query_param);
+    } 
+    else {
+      $practicioner_query = new WP_Query($query_args);
+      
+      $list_terms = get_terms('wf_practicioner_folders', array( 'parent' => $query_slug ) );  
+      if($query_param && $list_terms) {
+        $output = PracticionerDirectoryShortcode::html_for_child_list_template($list_terms, $practicioner_query);
+      } else {
+        switch($template){
+          case 'list':
+            $output = PracticionerDirectoryShortcode::html_for_list_template($practicioner_query);
+            break;
+          case 'grid':
+            $output = PracticionerDirectoryShortcode::html_for_grid_template($practicioner_query);
+            break;
+          default:
+            $output = PracticionerDirectoryShortcode::html_for_custom_template($template, $practicioner_query);
+            break;
+        }
       }
     }
 
     wp_reset_query();
 
   	return $output;
+  }
+
+  static function html_for_single_list_template($wp_query) {
+    $output = <<<EOT
+      <style type="text/css">
+        .clearfix {
+          clear: both;
+        }
+        .single-practicioner {
+          margin-bottom: 50px;
+        }
+        .single-practicioner .photo {
+          float: left;
+          margin-right: 15px;
+        }
+        .single-practicioner .photo img {
+          max-width: 100px;
+          height: auto;
+        }
+        .single-practicioner .name {
+          margin-bottom: 4px;
+        }
+        .single-practicioner .location {
+          margin-bottom: 10px;
+        }
+        .single-practicioner .bio {
+          margin-bottom: 8px;
+        }
+        .single-practicioner .email {
+          margin-bottom: 10px;
+        }
+      </style>
+      <div id="practicioner-directory-wrapper">
+EOT;
+
+      $name = $wp_query->post_title;
+      $permalink = get_permalink( $wp_query->ID );
+
+      $location = get_post_meta($wp_query->ID, 'location', true);
+      $bio = $wp_query->post_content;
+
+      if(has_post_thumbnail()) {
+        $attachment_array = wp_get_attachment_image_src(get_post_thumbnail_id());
+        $photo_url = $attachment_array[0];
+        $photo_html = '<div class="photo"><img src="' . $photo_url . '" /></div>';
+      } else {
+        $photo_html = '';
+      }
+
+      if(get_post_meta($wp_query->ID, 'profile_text', true) != '') {
+        $profile_text_html = get_post_meta($wp_query->ID, 'profile_text', true);
+      } else {
+        $profile_text_html = '';
+      }
+
+      if(get_post_meta($wp_query->ID, 'profile_link', true) != '') {
+        $profile_link_html = get_post_meta($wp_query->ID, 'profile_link', true);
+      } else {
+        $profile_link_html = '';
+      }
+
+      if(get_post_meta($wp_query->ID, 'certification_info', true) != '') {
+        $certification_html = get_post_meta($wp_query->ID, 'certification_info', true);
+      } else {
+        $certification_html = '';
+      }
+
+      if(get_post_meta($wp_query->ID, 'website', true) != '') {
+        $website = get_post_meta($wp_query->ID, 'website', true);
+        $website_html = '<div class="website">Website: <a href="' . $website . '">' . $website . '</a></div>';
+      } else {
+        $website_html = '';
+      }
+
+      $output .= <<<EOT
+        <div class="single-practicioner">
+          <div class="wp-block-columns">
+            <div class="wp-block-column" style="min-width:130px; flex-basis: 0 !important;">$photo_html</div>
+            <div class="wp-block-column">
+              <div class="name"><a href="$permalink">$name</a></div>
+              <div class="bio">$certification_html</div>
+              <div class="location">$location</div>
+              <div class="location">$profile_text_html</div>
+              <div class="location">$website_html</div>
+              <div class="bio">$bio</div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          
+        </div>
+EOT;
+    // }
+    $output .= "</div>";
+    return $output;
   }
 
   static function html_for_child_list_template($wp_query, $query) {
@@ -130,30 +231,16 @@ class PracticionerDirectoryShortcode {
           height: auto;
         }
         .single-practicioner .name {
-          font-size: 1em;
-          line-height: 1em;
           margin-bottom: 4px;
         }
         .single-practicioner .location {
-          font-size: .9em;
-          line-height: .9em;
           margin-bottom: 10px;
         }
         .single-practicioner .bio {
           margin-bottom: 8px;
         }
         .single-practicioner .email {
-          font-size: .9em;
-          line-height: .9em;
           margin-bottom: 10px;
-        }
-        .single-practicioner .phone {
-          font-size: .9em;
-          line-height: .9em;
-        }
-        .single-practicioner .website {
-          font-size: .9em;
-          line-height: .9em;
         }
       </style>
       <div id="practicioner-directory-wrapper">
@@ -162,6 +249,8 @@ EOT;
       $wp_query->the_post();
       
       $name = get_the_title();
+      $permalink = get_permalink( get_the_ID() );
+
       $location = get_post_meta(get_the_ID(), 'location', true);
       $bio = get_the_content();
 
@@ -185,8 +274,8 @@ EOT;
         $profile_link_html = '';
       }
 
-      if(get_post_meta(get_the_ID(), 'certification', true) != '') {
-        $certification_html = get_post_meta(get_the_ID(), 'certification', true);
+      if(get_post_meta(get_the_ID(), 'certification_info', true) != '') {
+        $certification_html = get_post_meta(get_the_ID(), 'certification_info', true);
       } else {
         $certification_html = '';
       }
@@ -200,15 +289,20 @@ EOT;
 
       $output .= <<<EOT
         <div class="single-practicioner">
-          $photo_html
-          <div class="name">$name</div>
-          <div class="location">$location</div>
-          <div class="bio">$bio</div>
-          $website_html
-          $profile_text_html
-          $profile_link_html
-          $certification_html
-          <div class="clearfix"></div>
+          <div class="wp-block-columns">
+            <div class="wp-block-column" style="min-width:130px; flex-basis: 0 !important;">$photo_html</div>
+            <div class="wp-block-column">
+              <div class="name"><a href="$permalink">$name</a></div>
+              <div class="bio">$certification_html</div>
+              <div class="location">$location</div>
+              <div class="location">$profile_text_html</div>
+              <div class="location">$website_html</div>
+              <div class="bio">$bio</div>
+              <div class="clearfix"></div>
+
+            </div>
+          </div>
+          
         </div>
 EOT;
     }
